@@ -4,6 +4,8 @@
   (or, failing that, Referer) from the site's own address. Together with the SameSite=Lax session
   cookie this blocks other sites from acting as a signed-in user. Requests with neither header
   (curl, server-to-server) carry no browser cookie risk and pass.
+- Private demo mode: with NYAYASIM_SITE_PASSWORD set, nothing but /health and the gate answers
+  until the site password has been entered (app/auth/gate.py).
 - Security headers on API responses (the website sets its own in next.config.ts).
 """
 
@@ -15,6 +17,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
+from app.auth.gate import request_passes
 from app.config import settings
 
 UNSAFE = {"POST", "PUT", "PATCH", "DELETE"}
@@ -36,6 +39,13 @@ def _origin_of(url: str) -> str:
 
 class SecurityMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
+        if not request_passes(request):
+            blocked = JSONResponse(
+                {"detail": "This site is private. Enter the site password first.", "gate": True}, 401
+            )
+            for k, v in API_HEADERS.items():
+                blocked.headers.setdefault(k, v)
+            return blocked
         if request.method in UNSAFE:
             origin = request.headers.get("origin") or _origin_of(request.headers.get("referer", ""))
             if origin and origin.rstrip("/") not in settings.allowed_origins:

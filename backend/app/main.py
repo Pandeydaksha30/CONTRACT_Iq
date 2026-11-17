@@ -17,6 +17,7 @@ from app.api.cases import router as cases_router
 from app.api.hearing import router as hearing_router
 from app.api.insights import router as insights_router
 from app.api.rag import router as rag_router
+from app.auth.gate import router as gate_router
 from app.config import settings
 from app.middleware import SecurityMiddleware
 
@@ -61,6 +62,13 @@ async def _housekeeping_loop() -> None:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    if settings.allow_demo_cases and settings.cookie_secure and settings.site_password is None:
+        # Demo cases send document text to the model; on an open public site anyone could tick
+        # "demo" for a real document. Private demo mode (a site password) is meant for this.
+        log.warning(
+            "NYAYASIM_ALLOW_DEMO_CASES is on for an HTTPS site without NYAYASIM_SITE_PASSWORD: "
+            "anyone can mark a real document as a demo and send it to the model."
+        )
     try:
         from app.hearing.jobs import fail_interrupted_runs
 
@@ -110,6 +118,7 @@ app.include_router(hearing_router)
 app.include_router(insights_router)
 app.include_router(rag_router)
 app.include_router(agent_router)
+app.include_router(gate_router)
 
 
 @app.get("/health")

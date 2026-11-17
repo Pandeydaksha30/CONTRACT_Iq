@@ -10,6 +10,9 @@
 #   Uses pg_restore/psql 17 if installed; otherwise runs them from the pgvector image with Docker
 #   (a local tool only, not part of the deployment).
 #
+# The all-in-one Docker stack (infra/docker-compose.prod.yml), run on the server:
+#   PROD=1 bash infra/import-data.sh release/nyayasim-public-orders.dump
+#
 # Refuses to run if the orders table already has rows, so it never mixes or duplicates data.
 # To replace existing data: FORCE=1 ...
 set -euo pipefail
@@ -38,14 +41,20 @@ if [ -n "${TARGET_URL:-}" ]; then
   fi
   where="the database at TARGET_URL"
 else
-  COMPOSE=(docker compose -f infra/docker-compose.yml)
+  if [ "${PROD:-0}" = "1" ]; then
+    COMPOSE=(docker compose -f infra/docker-compose.prod.yml --env-file "${ENV_FILE:-infra/.env.prod}")
+    where="the Docker stack's database"
+  else
+    COMPOSE=(docker compose -f infra/docker-compose.yml)
+    where="the local development database"
+  fi
+  if ! docker info >/dev/null 2>&1 && command -v sudo >/dev/null 2>&1; then COMPOSE=(sudo "${COMPOSE[@]}"); fi
   psql_q() { "${COMPOSE[@]}" exec -T postgres psql -U nyayasim -d nyayasim -v ON_ERROR_STOP=1 -tAc "$1"; }
   restore() {
     "${COMPOSE[@]}" cp "$DUMP_DIR/$DUMP_NAME" postgres:/tmp/nyayasim-data.dump
     # Inside `sh -c` so Git Bash on Windows does not rewrite /tmp/... into a Windows path.
     "${COMPOSE[@]}" exec -T postgres sh -c 'pg_restore -U nyayasim -d nyayasim --data-only --disable-triggers --no-owner --exit-on-error /tmp/nyayasim-data.dump; rc=$?; rm -f /tmp/nyayasim-data.dump; exit $rc'
   }
-  where="the local development database"
 fi
 
 existing="$(psql_q 'select count(*) from orders')"

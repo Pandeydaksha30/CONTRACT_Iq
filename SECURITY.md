@@ -16,6 +16,10 @@ What is in place, how it is checked, and what is not done yet.
 | Prompt injection | Passages are labelled as data in every prompt; the model has only read-only tools (except saving a hearing of the same case); its citations are checked by code, so injected text cannot add a false citation | design; `verify_cites` tests |
 | Uploads | 100-page and size caps, type check, files stored outside the web root | `tests/test_buyer.py` |
 | Secrets | `backend/.env` is git-ignored; on Render and Vercel secrets are set in the dashboards; only `.example` templates are committed; API keys stay on the server | `.gitignore`; ZIP check |
+| Private demo mode | Optional shared site password (`NYAYASIM_SITE_PASSWORD` / `SITE_PASSWORD`). The API refuses every route except `/health` without an HMAC gate token (cookie for browsers, header for the website's server), so a direct API call cannot bypass it; the password is never stored in the cookie; 10 attempts per 10 minutes per address | `tests/test_gate.py` (5); Docker stack over HTTP: pages redirect, API refuses directly and through the site, forged cookie refused |
+| Demo cases on a deployment | AI on fictional demo cases only with the site password: `deploy.sh` refuses `ALLOW_DEMO_CASES=true` without it, and the API logs a warning at startup | `infra/deploy.sh`, `app/main.py` |
+| Accounts without email | `scripts/admin_users.py` confirms, creates (random password shown once) or resets accounts; reset signs out every session; only Argon2id hashes are stored | `tests/test_admin_users.py` |
+| Containers | API and website images run as non-root users; ports bound to 127.0.0.1 in the Docker stack; secrets only in `infra/.env.prod` (mode 600, git-ignored) | `backend/Dockerfile`, `frontend/Dockerfile`, `infra/deploy.sh` |
 | Run limits | Agent: 6 steps, 7 minutes, model-call deadline, one running run per case (unique index) | `tests/test_agent.py` |
 
 ## Known gaps (not done)

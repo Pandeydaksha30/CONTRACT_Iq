@@ -26,6 +26,9 @@ const nextConfig: NextConfig = {
   // `npm run build:check` builds into .next-check so it can run while `npm run dev` uses .next.
   // (Building into the dev server's folder breaks it with "Cannot find module './NNN.js'".)
   distDir: process.env.NEXT_DIST_DIR || ".next",
+  // Self-contained server for the optional Docker image (frontend/Dockerfile sets NEXT_OUTPUT).
+  // Vercel and `next start` use the normal output.
+  ...(process.env.NEXT_OUTPUT === "standalone" ? { output: "standalone" as const } : {}),
   poweredByHeader: false,
   // Model calls (fact extraction, document answers) can take minutes when Gemini is busy and the
   // backend retries. Without this the local /api forwarding gives up after 30 s with a bare HTTP 500.

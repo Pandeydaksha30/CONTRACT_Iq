@@ -1,0 +1,24 @@
+# HTTPS for {$DOMAIN}: automatic certificates, one address for website + API.
+# /api/* and /health go to the API, everything else to the website, so the session cookie is
+# first-party and every request is same-origin. Private demo mode (SITE_PASSWORD) is enforced by
+# the website and the API themselves, so it works the same behind Caddy.
+
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	request_body {
+		max_size 26MB
+	}
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+	handle /health {
+		reverse_proxy api:8000
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}

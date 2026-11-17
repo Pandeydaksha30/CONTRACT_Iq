@@ -13,6 +13,12 @@ databases:
     plan: basic-1gb                 # the order data needs about 0.6 GB of storage
 
 services:
+  # Native Python runtime (no OCR: Render's Python environment has no Tesseract). To read scanned
+  # pages too, use the Docker runtime instead: replace the four lines runtime..startCommand with
+  #     runtime: docker
+  #     dockerfilePath: ./backend/Dockerfile
+  #     dockerContext: .
+  # (the image runs the migrations and listens on $PORT by itself).
   - type: web
     name: contractiq-api
     runtime: python
@@ -48,6 +54,14 @@ services:
         value: "false"
       - key: GEMINI_API_KEY
         sync: false
+      # Private demo mode (DEPLOYMENT_GUIDE.md): one shared password in front of the whole site.
+      # Set the same value as SITE_PASSWORD on Vercel. Empty: an open site.
+      - key: NYAYASIM_SITE_PASSWORD
+        sync: false
+      # "true" only together with NYAYASIM_SITE_PASSWORD: lets users mark a case as a fictional
+      # demo, which unlocks the AI steps for it. Never on an open public site.
+      - key: NYAYASIM_ALLOW_DEMO_CASES
+        value: "false"
       - key: NYAYASIM_SMTP_HOST
         sync: false
       - key: NYAYASIM_SMTP_PORT

@@ -105,7 +105,17 @@ def latest_verify_token() -> str | None:
 
 
 def client() -> httpx.Client:
-    return httpx.Client(headers=HEADERS, timeout=180, follow_redirects=False)
+    c = httpx.Client(headers=HEADERS, timeout=180, follow_redirects=False)
+    # Private demo mode (NYAYASIM_E2E_SITE_PASSWORD): carry the gate cookie a browser gets after
+    # entering the password. Set directly, so the many short-lived clients here do not use up the
+    # gate's rate limit (10 password attempts per 10 minutes); POST /gate itself is tested in
+    # tests/test_gate.py and by `gate` below.
+    gate = os.environ.get("NYAYASIM_E2E_SITE_PASSWORD")
+    if gate:
+        from app.auth.gate import GATE_COOKIE, gate_token
+
+        c.cookies.set(GATE_COOKIE, gate_token(gate))
+    return c
 
 
 def login(c: httpx.Client) -> httpx.Response:

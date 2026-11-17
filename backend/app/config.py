@@ -39,6 +39,16 @@ class Settings(BaseSettings):
     # normally set in backend/.env, which git ignores. Never logged or printed.
     gemini_api_key: SecretStr | None = Field(None, validation_alias="GEMINI_API_KEY")
 
+    # Private demo mode (app/auth/gate.py): one shared password in front of the whole site.
+    # Unset (default): the site is open as usual. Use it with allow_demo_cases on a deployment
+    # meant only for an evaluation or a private preview.
+    site_password: SecretStr | None = None
+
+    @field_validator("site_password", mode="before")
+    @classmethod
+    def _empty_password_is_unset(cls, v):
+        return None if isinstance(v, str) and not v.strip() else v
+
     @field_validator("gemini_api_key", mode="before")
     @classmethod
     def _empty_key_is_unset(cls, v):

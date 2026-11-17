@@ -1,5 +1,24 @@
 # Test report
 
+## 18 Nov 2026: deploy anywhere, private demo mode, admin accounts
+
+| Test | Result |
+|---|---|
+| Backend tests | **273 passed, 0 failed** (+5 site gate, +1 admin accounts) |
+| Docker images | API (with Tesseract) and website built; the first API build hit a Docker Desktop cache error ("lease does not exist") and succeeded when rebuilt |
+| All-in-one Docker stack, private demo mode, run on this machine | database, API, website healthy; migrations to 0010 at start; public data imported (13,992 orders, 72,970 passages) |
+| Site gate over HTTP | pages redirect to the password page; API refuses through the site and directly on its own port; forged cookie refused; wrong password 401, right password opens the site; server-rendered pages still get their data |
+| Accounts without email | sign-up, login refused (403) until `admin_users verify` in the container, then allowed |
+| End to end against the stack (Gemini, fictional documents) | setup 29 (OCR of the scanned receipt, confidence 94.7), facts 5, rag 9, hearing 5, insights 16, isolation 9, session 6, lifecycle 19 of 20, agent 6; contract analysis 4 clauses verified, 0 removed |
+
+Notes: the first hearing attempt failed because Gemini answered 503 on both the main and the
+fallback model; the run was marked failed with that reason, and the rerun passed. The lifecycle
+check that fails expects public figures without any cookie; in private demo mode nothing is public,
+which is the intended behaviour. The test harness first tripped the gate's own rate limit by
+entering the password for every client; it now carries the cookie like a returning browser.
+Not tested: Vercel, Render or any other hosted platform.
+
+
 ## 17 Nov 2026: ContractIQ release (rename, clause analysis, calculator audit, Vercel/Render config)
 
 | Test | Result |

@@ -39,8 +39,12 @@ SessionDep = Annotated[Session, Depends(get_session)]
 _REPO_MODELS = Path(__file__).resolve().parents[3] / "data" / "models"
 
 
+# In the Docker image the files are copied next to the code (backend/Dockerfile).
+_IMAGE_MODELS = Path(__file__).resolve().parents[2] / "models"
+
+
 def _models_dir() -> Path:
-    for d in (settings.data_dir / "models", _REPO_MODELS):
+    for d in (settings.data_dir / "models", _REPO_MODELS, _IMAGE_MODELS):
         if any(d.glob("*_tfidf_lr.joblib")):
             return d
     return _REPO_MODELS

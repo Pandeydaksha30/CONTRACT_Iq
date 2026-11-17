@@ -9,6 +9,7 @@
  * produced, and they work without signing in. The example is read-only.
  */
 import { ApiError, BASE } from "./api";
+import { serverGateHeaders } from "./gate";
 
 /** Server components pass the signed-in user's cookie (lib/server-session.ts); the browser sends
  * it by itself. */
@@ -39,7 +40,11 @@ export async function call<T>(path: string, init?: RequestInit, auth?: Auth): Pr
       cache: "no-store",
       credentials: "same-origin",
       ...init,
-      headers: { ...(init?.headers as Record<string, string> | undefined), ...auth?.headers },
+      headers: {
+        ...(init?.headers as Record<string, string> | undefined),
+        ...auth?.headers,
+        ...(await serverGateHeaders()),
+      },
     });
   } catch {
     throw new ApiError("The ContractIQ service is not reachable. Please try again in a moment.");

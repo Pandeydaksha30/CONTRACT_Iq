@@ -13,8 +13,9 @@ is calculated by deterministic code, never by the language model.
 ContractIQ began as eContractIQ (mid-viva: contract Q&A and benefits/obligations analysis). How it
 grew, and what is new versus carried over: **PROJECT_EVOLUTION.md**.
 
-**Status (17 Nov 2026):** runs locally end to end; 267 backend tests pass. Deployment to Vercel
-(website) and Render (API and PostgreSQL) is configured but **not yet deployed**.
+**Status (18 Nov 2026):** runs end to end locally and as an all-in-one Docker stack (tested on this
+machine in private demo mode); 273 backend tests pass. Deployment is ready for Vercel + Render,
+any container host, or one Linux server, but **nothing is publicly deployed yet**.
 
 ## Features
 
@@ -34,8 +35,8 @@ grew, and what is new versus carried over: **PROJECT_EVOLUTION.md**.
 
 ## Technology
 
-Next.js 15 / React 19 / TypeScript (Vercel); FastAPI on Python 3.12 (Render); PostgreSQL 17 with
-pgvector (Render PostgreSQL); local `bge-small-en-v1.5` embeddings (fastembed); Tesseract OCR;
+Next.js 15 / React 19 / TypeScript (Vercel or container); FastAPI on Python 3.12 (Render or
+container); PostgreSQL 17 with pgvector; local `bge-small-en-v1.5` embeddings (fastembed); Tesseract OCR;
 LangGraph; Google Gemini; scikit-learn.
 
 ## Run, demonstrate, deploy
@@ -44,7 +45,7 @@ LangGraph; Google Gemini; scikit-learn.
 |---|---|
 | Run locally | **RUN_LOCAL.md** (website http://localhost:3100, API http://localhost:8000/docs) |
 | Demonstration script | **DEMO_GUIDE.md**, fictional documents in `demo/sample-documents/` |
-| Deploy | **DEPLOYMENT_GUIDE.md** (`render.yaml`, `frontend/vercel.json`) |
+| Deploy | **DEPLOYMENT_GUIDE.md**: Vercel + Render (`render.yaml`, `frontend/vercel.json`), any container host (`backend/Dockerfile`), or one server (`infra/deploy.sh`); optional private demo mode |
 
 ## Measured results
 
@@ -82,7 +83,7 @@ is configured. Retrieval and the calculator run on the server for every case.
 ```text
 backend/    FastAPI app (app/), migrations, tests, eval set, scripts, uv.lock
 frontend/   Next.js website, vercel.json
-infra/      local development database (docker-compose.yml), data export/import scripts
+infra/      local dev database, all-in-one Docker stack, deploy/backup/restore and data scripts
 data/       classifier files (tracked); uploads, outbox, model cache (not tracked)
 release/    public order data file for import (not tracked)
 benchmark/  frozen evaluation split

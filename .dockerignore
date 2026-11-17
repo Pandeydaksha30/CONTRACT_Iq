@@ -1,0 +1,12 @@
+# Build context of the API image (docker build -f backend/Dockerfile .): send only the backend
+# code and the two classifier files, never data, uploads, secrets or the website.
+*
+!backend/
+!data/models/*_tfidf_lr.joblib
+backend/.venv
+backend/**/__pycache__
+backend/.pytest_cache
+backend/.ruff_cache
+backend/.env
+backend/.env.*
+backend/tests

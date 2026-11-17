@@ -1,4 +1,10 @@
-# Feature status (17 Nov 2026)
+# Feature status (18 Nov 2026)
+
+Update 18 Nov: deployment works on any host. Docker is back as an option (API image with OCR,
+website image, all-in-one stack with HTTPS); private demo mode (one site password) and an admin
+command for accounts without email. The Docker stack was run end to end in private demo mode on
+this machine (TEST_REPORT.md). Vercel, Render and other hosts are still not deployed. 273 backend
+tests pass.
 
 Update 17 Nov (ContractIQ): renamed from NyayaSim; contract clause analysis (rights, obligations,
 penalties per party, the mid-viva eContractIQ feature) added and tested with a scripted model;
@@ -70,7 +76,8 @@ check. Update 12 Nov: the journey was re-run end to end and 49 of 49 checks pass
 | Embedding of order chunks | Partially implemented | 65,974 of 72,970 chunks embedded |
 | Classifier training and evaluation scripts | Working and verified (11 Nov) | Offline |
 | Prediction API endpoints | Working and verified (13 Nov) | Estimate and classifier demo |
-| Deployment: Vercel (website) + Render native Python (API) + Render PostgreSQL | Configured, not deployed (17 Nov) | `render.yaml`, `frontend/vercel.json`, DEPLOYMENT_GUIDE.md. The earlier Docker stack was removed |
+| Deployment, options A–D (Vercel + Render native or Docker, any container host, one server) | Docker stack verified locally end to end (18 Nov); Vercel, Render and other hosts configured, not deployed | `render.yaml`, `frontend/vercel.json`, `backend/Dockerfile`, `infra/docker-compose.prod.yml`, `infra/deploy.sh`, DEPLOYMENT_GUIDE.md |
+| Private demo mode (site password) and admin account command | Working and verified (tests + Docker stack over HTTP) | `app/auth/gate.py`, `frontend/middleware.ts`, `scripts/admin_users.py` |
 | Public deployment | **Missing** | No server, no public URL |
 | Invalid file, empty upload, unsupported format handling | Implemented but untested in this audit | Unit tests cover some cases; to be exercised in Phase 4 |
 

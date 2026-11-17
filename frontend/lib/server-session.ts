@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { BASE } from "./api";
 import type { User } from "./auth-api";
 import type { Auth } from "./cases-api";
+import { serverGateHeaders } from "./gate";
 
 export const SESSION_COOKIE = "nyayasim_session";
 
@@ -21,7 +22,7 @@ export async function getUser(): Promise<User | null> {
   if (!auth.headers) return null;
   let res: Response;
   try {
-    res = await fetch(`${BASE}/api/v1/auth/me`, { cache: "no-store", headers: auth.headers });
+    res = await fetch(`${BASE}/api/v1/auth/me`, { cache: "no-store", headers: { ...auth.headers, ...(await serverGateHeaders()) } });
   } catch {
     return null; // pages that need data report the outage themselves
   }
