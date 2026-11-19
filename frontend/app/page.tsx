@@ -48,7 +48,7 @@ export default async function HomePage() {
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <div>
-            <div className={styles.kicker}>Real-estate contract intelligence · RERA dispute support</div>
+            <div className={styles.kicker}>For home buyers whose builder is late</div>
             <h1 className={styles.title}>Prepare your complaint with the record in front of you.</h1>
             <p className={styles.lede}>
               ContractIQ reads your builder–buyer agreement, answers your questions about it with the clause and page,
@@ -68,7 +68,7 @@ export default async function HomePage() {
 
           <div className={styles.sheet} aria-label="Excerpt from the example report">
             <div className={styles.sheetHead}>
-              <span className={`label ${styles.sheetLabel}`}>Decision report · excerpt</span>
+              <span className={styles.sheetLabel}>From the example report</span>
               <span className="tag tag-neutral">Fictional buyer, real orders</span>
             </div>
             <div className={styles.sheetBody}>
@@ -126,12 +126,12 @@ export default async function HomePage() {
       <section className={styles.section}>
         <div className={styles.sectionHead}>
           <h2>How it works</h2>
-          <p>Five steps from a folder of papers to a report you can take to your advocate.</p>
+          <p>Seven steps from a folder of papers to a report you can take to your advocate.</p>
         </div>
         <ol className={styles.steps}>
           {STEPS.map(([title, text], i) => (
             <li key={title}>
-              <span className={styles.stepNo}>{String(i + 1).padStart(2, "0")}</span>
+              <span className={styles.stepNo}>{i + 1}.</span>
               <span className={styles.stepTitle}>{title}</span>
               <span className={styles.stepText}>{text}</span>
             </li>

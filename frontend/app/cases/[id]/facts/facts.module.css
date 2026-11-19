@@ -61,7 +61,7 @@
   font-family: var(--serif);
   font-size: 15.5px;
   line-height: 1.7;
-  color: #1e293b;
+  color: var(--text);
 }
 .sheet p { margin: 0 0 14px; }
 

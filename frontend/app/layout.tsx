@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { IBM_Plex_Mono, Inter, Source_Serif_4 } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import EarlyAccessNotice from "@/components/early-access-notice";
 import { ContractIQMark } from "@/components/icons";
 import TopNav from "@/components/top-nav";
@@ -8,9 +8,8 @@ import UserMenu from "@/components/user-menu";
 import { getUser } from "@/lib/server-session";
 import "./globals.css";
 
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
-// Serif is reserved for legal documents (agreements, orders, the complaint draft) and headings
-// on the public pages.
+const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
+// Serif for headings and legal documents; IBM Plex Sans for reading and forms.
 const serif = Source_Serif_4({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-serif" });
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 

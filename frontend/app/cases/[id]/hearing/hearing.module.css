@@ -17,17 +17,17 @@
 .arg p { margin: 0 0 12px; color: var(--text-2); }
 
 .builder { margin-left: auto; }
-.judge { max-width: none; border-color: #c7d2fe; background: linear-gradient(var(--primary-soft), var(--primary-soft)) top / 100% 3px no-repeat, var(--surface); }
+.judge { max-width: none; border-color: var(--border-strong); border-top: 2px solid var(--text); background: var(--surface); }
 .judge p { font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--text); }
 
-.who { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 999px; border: 1px solid; }
-.buyer .who { color: var(--pos); background: var(--pos-soft); border-color: var(--pos-border); }
-.builder .who { color: var(--neg); background: var(--neg-soft); border-color: var(--neg-border); }
-.judge .who { color: var(--primary); background: var(--primary-soft); border-color: #c7d2fe; }
+.who { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 3px 6px; border-radius: 2px; border: 1px solid currentColor; background: transparent; }
+.buyer .who { color: var(--pos); }
+.builder .who { color: var(--neg); }
+.judge .who { color: var(--text); }
 
 .cites { list-style: none; margin: 0; padding: 10px 0 0; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-2); display: grid; gap: 4px; }
 .cites li { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
-.ok, .no { font-size: 11.5px; font-weight: 600; padding: 2px 7px; border-radius: 999px; }
+.ok, .no { font-size: 11.5px; font-weight: 600; padding: 2px 7px; border-radius: 2px; }
 .ok { color: var(--pos); background: var(--pos-soft); }
 .no { color: var(--neg); background: var(--neg-soft); }
 .blocked .code { text-decoration: line-through; color: var(--text-3); }
