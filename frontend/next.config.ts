@@ -30,6 +30,8 @@ const nextConfig: NextConfig = {
   // Vercel and `next start` use the normal output.
   ...(process.env.NEXT_OUTPUT === "standalone" ? { output: "standalone" as const } : {}),
   poweredByHeader: false,
+  // No Next.js badge in the corner during local demos (it never appears in production anyway).
+  devIndicators: false,
   // Model calls (fact extraction, document answers) can take minutes when Gemini is busy and the
   // backend retries. Without this the local /api forwarding gives up after 30 s with a bare HTTP 500.
   // On Vercel the platform's own proxy limit applies instead (DEPLOYMENT_GUIDE.md).
