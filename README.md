@@ -1,4 +1,4 @@
-# ContractIQ
+# nyayasim : ContractIQ
 
 **Real-estate contract intelligence and legal dispute support.** A home buyer uploads their
 builder–buyer agreement and papers; ContractIQ answers questions about the contract with the
