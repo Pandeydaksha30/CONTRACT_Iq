@@ -9,7 +9,7 @@ import type { User } from "./auth-api";
 import type { Auth } from "./cases-api";
 import { serverGateHeaders } from "./gate";
 
-export const SESSION_COOKIE = "nyayasim_session";
+export const SESSION_COOKIE = "contractiq_session";
 
 export async function sessionAuth(): Promise<Auth> {
   const c = (await cookies()).get(SESSION_COOKIE);

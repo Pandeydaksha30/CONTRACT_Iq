@@ -3,7 +3,7 @@
 New users must confirm their email before they can sign in. Without SMTP nobody receives that
 email, so an administrator confirms or creates accounts with this command instead.
 
-Usage (from backend/, with NYAYASIM_DATABASE_URL pointing at the deployed database):
+Usage (from backend/, with CONTRACTIQ_DATABASE_URL pointing at the deployed database):
   python -m scripts.admin_users list
   python -m scripts.admin_users verify someone@example.com          # confirm a sign-up
   python -m scripts.admin_users create someone@example.com "Name"   # new account, confirmed

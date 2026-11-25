@@ -1,6 +1,6 @@
 """Private demo mode: one shared site password in front of the whole application.
 
-Off unless NYAYASIM_SITE_PASSWORD is set. When set, every API request except /health and the
+Off unless CONTRACTIQ_SITE_PASSWORD is set. When set, every API request except /health and the
 gate itself needs proof that the visitor entered the password:
 
 - the browser: the HttpOnly cookie `contractiq_gate`, set by POST /api/v1/gate;

@@ -68,14 +68,14 @@ class OcrConfig:
 
 
 def find_ocr() -> OcrConfig | None:
-    """Locate tesseract and language data. NYAYASIM_TESSERACT / NYAYASIM_TESSDATA override."""
-    cmd = os.environ.get("NYAYASIM_TESSERACT") or shutil.which("tesseract")
+    """Locate tesseract and language data. CONTRACTIQ_TESSERACT / CONTRACTIQ_TESSDATA override."""
+    cmd = os.environ.get("CONTRACTIQ_TESSERACT") or shutil.which("tesseract")
     if not cmd:
         default = Path(r"C:\Program Files\Tesseract-OCR\tesseract.exe")
         cmd = str(default) if default.exists() else None
     if not cmd:
         return None
-    tessdata = os.environ.get("NYAYASIM_TESSDATA")
+    tessdata = os.environ.get("CONTRACTIQ_TESSDATA")
     if not tessdata:
         local = Path(__file__).resolve().parents[3] / "data" / "tessdata"
         tessdata = str(local) if (local / "hin.traineddata").exists() else None

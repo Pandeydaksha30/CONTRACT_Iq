@@ -52,7 +52,7 @@ service; Terms and Privacy pages are drafts awaiting a lawyer's review.
    - `http://localhost:3100/api/v1/auth/google/callback` (local)
    - `https://your-domain/api/v1/auth/google/callback` (server)
 3. Copy the client ID and secret:
-   - local: `NYAYASIM_GOOGLE_CLIENT_ID=...` and `NYAYASIM_GOOGLE_CLIENT_SECRET=...` in `backend\.env`
+   - local: `CONTRACTIQ_GOOGLE_CLIENT_ID=...` and `CONTRACTIQ_GOOGLE_CLIENT_SECRET=...` in `backend\.env`
    - server: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in the Render service's environment
 4. Restart the API. The "Continue with Google" button appears only when both are set.
 
@@ -62,7 +62,7 @@ publish it for everyone.
 ## Setting up email
 
 Any SMTP service works. Set in `backend\.env` (local) or the Render service's environment (without the
-`NYAYASIM_` prefix): `SMTP_HOST`, `SMTP_PORT` (587 STARTTLS or 465 TLS), `SMTP_USER`,
+`CONTRACTIQ_` prefix): `SMTP_HOST`, `SMTP_PORT` (587 STARTTLS or 465 TLS), `SMTP_USER`,
 `SMTP_PASSWORD`, `SMTP_FROM`. Free options: Brevo (300 emails/day), or Gmail with an app password
 (for testing only). Without SMTP, emails are written to `data/outbox/` and their links logged:
 fine on your own PC, not for a public site.

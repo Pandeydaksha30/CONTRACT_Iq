@@ -31,7 +31,7 @@ from app.db.session import get_session
 from app.ingestion.pdf_text import OcrConfig, find_ocr
 from app.retrieval.embedder import Embedder
 
-log = logging.getLogger("nyayasim.cases")
+log = logging.getLogger("contractiq.cases")
 
 router = APIRouter(prefix="/api/v1/cases", tags=["cases"])
 SessionDep = Annotated[Session, Depends(get_session)]

@@ -93,7 +93,7 @@ The browser calls `/api/...` on the site's own address; Next.js forwards it to t
 6. **Email is not sent.** Sign-up needs the verification link from `data/outbox/`.
 7. **6,996 chunks have no embedding**, so the newest orders are found by keyword search only
    until `scripts.embed_chunks` is run.
-8. **Model accuracy is modest** (MODEL_EVALUATION.md, MODEL_TRAINING_GUIDE.md): citation checker
+8. **Model accuracy is modest** (docs/model-evaluation.md, docs/model-training.md): citation checker
    precision 100% / recall 98.3%; outcome prediction best 72.9%; claim type 74.3%. Labels are
    machine-made and unchecked. These numbers must be presented as they are.
 

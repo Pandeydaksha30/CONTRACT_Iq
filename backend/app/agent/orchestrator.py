@@ -31,7 +31,7 @@ from pydantic import BaseModel, Field
 from app.agent.tools import TOOLS, ToolContext, ToolError, describe, jsonable
 from app.agent.verify import verify_cites
 
-log = logging.getLogger("nyayasim.agent")
+log = logging.getLogger("contractiq.agent")
 
 MAX_STEPS = 6
 SUB_STEPS = 3

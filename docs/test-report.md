@@ -44,12 +44,12 @@ today, unchanged apart from the interest tool's end date, which is covered by un
 
 ## 13 Nov 2026
 
-Everything below was run on this machine on 13 Nov 2026. Earlier results: docs/history/END_TO_END_TEST_REPORT.md
+Everything below was run on this machine on 13 Nov 2026. Earlier results: docs/archive/END_TO_END_TEST_REPORT.md
 (12 Nov). Nothing here was tuned on the held-out evaluation questions or the frozen ML test set.
 
 ## Unit and integration tests (backend)
 
-`NYAYASIM_REQUIRE_DB=1 python -m pytest` against a throwaway database migrated from scratch to 0010:
+`CONTRACTIQ_REQUIRE_DB=1 python -m pytest` against a throwaway database migrated from scratch to 0010:
 **244 passed, 0 failed** (was 228; +9 document RAG, +7 agent).
 
 | New test file | What it proves |

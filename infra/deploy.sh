@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-command deploy of the all-in-one Docker stack on an Ubuntu/Debian server (or any machine
-# with Docker). Optional: the default deployment is Vercel + Render (DEPLOYMENT_GUIDE.md).
+# with Docker). Optional: the default deployment is Vercel + Render (docs/deployment.md).
 #
 # Run from the project root on the server:
 #   DOMAIN=contractiq.example.org bash infra/deploy.sh                     # public HTTPS site
@@ -64,7 +64,7 @@ COOKIE_SECURE=$secure
 SITE_PASSWORD=${SITE_PASSWORD:-}
 ALLOW_DEMO_CASES=${ALLOW_DEMO_CASES:-false}
 GEMINI_API_KEY=${GEMINI_API_KEY:-}
-NYAYASIM_PRIVATE_LLM_OK=false
+CONTRACTIQ_PRIVATE_LLM_OK=false
 GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
 GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
 SMTP_HOST=${SMTP_HOST:-}

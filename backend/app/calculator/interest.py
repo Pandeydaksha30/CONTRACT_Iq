@@ -1,7 +1,7 @@
 """Deterministic delay-interest and refund calculator.
 
 All money figures in ContractIQ come from here, never from an LLM. Full audit with sources:
-FINANCIAL_CALCULATOR_AUDIT.md.
+docs/calculator.md.
 
 Method (simple interest, computed payment by payment):
 

@@ -7,7 +7,7 @@ Tasks
 Data: labelled orders whose facts part can be cut safely (no authority text). Splits come from the
 frozen benchmark (benchmark/split_v1.json): fit on train, choose settings on validation by
 macro-F1, refit on train + validation, score once on test. Labels are machine-extracted and not
-yet hand-checked (MODEL_EVALUATION.md), so scores are against noisy truth.
+yet hand-checked (docs/model-evaluation.md), so scores are against noisy truth.
 
 Model: TF-IDF (word 1-2 grams, sublinear tf) + logistic regression with balanced class weights —
 a strong, transparent baseline for small labelled sets; structured features (claim type, delay

@@ -1,5 +1,5 @@
 # ContractIQ all-in-one stack for any Linux server (or Docker Desktop): database, API, website,
-# and optional HTTPS. Optional: the default deployment is Vercel + Render (DEPLOYMENT_GUIDE.md).
+# and optional HTTPS. Optional: the default deployment is Vercel + Render (docs/deployment.md).
 #   cp infra/.env.prod.example infra/.env.prod      (fill it in)
 #   docker compose -f infra/docker-compose.prod.yml --env-file infra/.env.prod up -d --build
 # With HTTPS (a domain pointing at this server), or let infra/deploy.sh do everything:
@@ -28,21 +28,21 @@ services:
     image: contractiq-api:latest
     restart: unless-stopped
     environment:
-      NYAYASIM_DATABASE_URL: postgresql+psycopg://nyayasim:${POSTGRES_PASSWORD}@postgres:5432/nyayasim?connect_timeout=10
-      NYAYASIM_CORS_ORIGINS: ${PUBLIC_WEB_URL:?set PUBLIC_WEB_URL}
-      NYAYASIM_PUBLIC_URL: ${PUBLIC_WEB_URL}
-      NYAYASIM_COOKIE_SECURE: ${COOKIE_SECURE:-false}
-      NYAYASIM_SITE_PASSWORD: ${SITE_PASSWORD:-}
-      NYAYASIM_ALLOW_DEMO_CASES: ${ALLOW_DEMO_CASES:-false}
-      NYAYASIM_PRIVATE_LLM_OK: ${NYAYASIM_PRIVATE_LLM_OK:-false}
+      CONTRACTIQ_DATABASE_URL: postgresql+psycopg://nyayasim:${POSTGRES_PASSWORD}@postgres:5432/nyayasim?connect_timeout=10
+      CONTRACTIQ_CORS_ORIGINS: ${PUBLIC_WEB_URL:?set PUBLIC_WEB_URL}
+      CONTRACTIQ_PUBLIC_URL: ${PUBLIC_WEB_URL}
+      CONTRACTIQ_COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      CONTRACTIQ_SITE_PASSWORD: ${SITE_PASSWORD:-}
+      CONTRACTIQ_ALLOW_DEMO_CASES: ${ALLOW_DEMO_CASES:-false}
+      CONTRACTIQ_PRIVATE_LLM_OK: ${CONTRACTIQ_PRIVATE_LLM_OK:-false}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      NYAYASIM_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
-      NYAYASIM_GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
-      NYAYASIM_SMTP_HOST: ${SMTP_HOST:-}
-      NYAYASIM_SMTP_PORT: ${SMTP_PORT:-587}
-      NYAYASIM_SMTP_USER: ${SMTP_USER:-}
-      NYAYASIM_SMTP_PASSWORD: ${SMTP_PASSWORD:-}
-      NYAYASIM_SMTP_FROM: ${SMTP_FROM:-ContractIQ <no-reply@localhost>}
+      CONTRACTIQ_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      CONTRACTIQ_GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      CONTRACTIQ_SMTP_HOST: ${SMTP_HOST:-}
+      CONTRACTIQ_SMTP_PORT: ${SMTP_PORT:-587}
+      CONTRACTIQ_SMTP_USER: ${SMTP_USER:-}
+      CONTRACTIQ_SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      CONTRACTIQ_SMTP_FROM: ${SMTP_FROM:-ContractIQ <no-reply@localhost>}
     volumes:
       - appdata:/srv/data
     depends_on:

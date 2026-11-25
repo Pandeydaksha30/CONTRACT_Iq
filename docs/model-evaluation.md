@@ -16,7 +16,7 @@ final number for a component; development uses the validation split.
 
 104 groups of duplicate orders (same PDF, or same complaint number) were found; none span two
 splits, so no evaluated order has a twin in training. Labels are still **machine-extracted and not
-yet checked by a person**; the blind two-annotator process (`docs/annotation-guide.md`) will
+yet checked by a person**; the blind two-annotator process (`docs/components/annotation-guide.md`) will
 replace them with gold labels.
 
 ## 1. Citation verifier (rule-based, not trained)

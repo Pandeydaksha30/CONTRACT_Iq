@@ -18,7 +18,7 @@ from app.db.session import get_engine
 from app.hearing.agents import LLM
 from app.retrieval.embedder import Embedder
 
-log = logging.getLogger("nyayasim.agent")
+log = logging.getLogger("contractiq.agent")
 
 
 def execute_agent_run(s: Session, run: AgentRun, llm: LLM, embedder: Embedder | None) -> AgentRun:

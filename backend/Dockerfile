@@ -10,8 +10,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    NYAYASIM_TESSERACT=/usr/bin/tesseract \
-    NYAYASIM_DATA_DIR=/srv/data
+    CONTRACTIQ_TESSERACT=/usr/bin/tesseract \
+    CONTRACTIQ_DATA_DIR=/srv/data
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin curl \

@@ -21,7 +21,7 @@ from collections import Counter
 from pathlib import Path
 
 LIST_URL = "https://haryanarera.gov.in/admincontrol/judgements/2"
-USER_AGENT = "Mozilla/5.0 (NyayaSim research; slow fetch)"
+USER_AGENT = "Mozilla/5.0 (ContractIQ research; slow fetch)"
 DELAY_S = 2.5
 
 

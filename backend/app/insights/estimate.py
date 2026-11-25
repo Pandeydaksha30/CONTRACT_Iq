@@ -1,7 +1,7 @@
 """Outcome estimate for a buyer's case from the claim x delay rule (app/backtest/baselines.py).
 
 The rule is the best-measured outcome method so far (72.9% on 59 held-out orders, against
-machine-extracted labels; MODEL_EVALUATION.md). It counts how past orders with the same claim type
+machine-extracted labels; docs/model-evaluation.md). It counts how past orders with the same claim type
 and a similar delay ended. Everything is computed locally from stored records; nothing about the
 case is sent anywhere.
 """

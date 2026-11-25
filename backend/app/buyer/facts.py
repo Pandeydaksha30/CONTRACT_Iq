@@ -265,7 +265,7 @@ def extract_case_facts(session: Session, case_id, extractor: FactExtractor) -> d
     if not (case.is_demo or settings.private_llm_ok):
         raise PrivateDataBlocked(
             "Real buyer documents are not sent to the configured model because it may retain data. "
-            "Configure a no-retention model (NYAYASIM_PRIVATE_LLM_OK=true) or use a demo case."
+            "Configure a no-retention model (CONTRACTIQ_PRIVATE_LLM_OK=true) or use a demo case."
         )
     summary = {"documents": 0, "facts": 0, "rejected": [], "errors": []}
     # Read everything first, then end the transaction: no transaction may stay open during the

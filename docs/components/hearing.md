@@ -28,7 +28,7 @@ Every run (completed or failed) is stored in `hearing_runs` with its full result
 ## Privacy
 
 The hearing sends the case facts to the model, so it runs only for demo cases until a
-no-retention model is configured (`NYAYASIM_PRIVATE_LLM_OK=true`); otherwise HTTP 403.
+no-retention model is configured (`CONTRACTIQ_PRIVATE_LLM_OK=true`); otherwise HTTP 403.
 
 ## Models
 
@@ -43,7 +43,7 @@ the gate and the code decide what reaches the report.
   each model call (tested). `scripts/run_hearing.py` prints each call and dumps stacks if
   stuck for 15 minutes.
 * Second attempt: `gemini-3.8-flash` free-tier daily quota exhausted (HTTP 429, used up by
-  extraction). Run with `NYAYASIM_HEARING_MODEL=gemini-3.5-flash-lite`: completed in 12 s.
+  extraction). Run with `CONTRACTIQ_HEARING_MODEL=gemini-3.5-flash-lite`: completed in 12 s.
 * Result: 10 precedents (7 with verified outcomes: 4 allowed, 3 partly allowed -> 7/7, 90%
   range 72-100%); award: delay interest Rs 11,74,886 on Rs 21,60,000 paid at 10.15% (median
   of 4 precedent rates), matching a hand calculation; 3 arguments kept, 0 removed; bench:

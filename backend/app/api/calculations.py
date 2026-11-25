@@ -39,7 +39,7 @@ class InterestRequest(BaseModel):
     annual_rate_pct: Annotated[Decimal, Field(ge=0, le=50, max_digits=6, decimal_places=3)]
     as_of: date
     # Delay interest stops at offer of possession + 2 months or actual handover, whichever is
-    # earlier (practice of HRERA Gurugram orders; FINANCIAL_CALCULATOR_AUDIT.md). Both optional.
+    # earlier (practice of HRERA Gurugram orders; docs/calculator.md). Both optional.
     offer_of_possession: date | None = None
     possession_handed_over: date | None = None
     # Where the rate comes from (rule, circular, date). Echoed back so the figure is never shown unsourced.

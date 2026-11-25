@@ -32,7 +32,7 @@ from PIL import Image, ImageDraw, ImageFont
 from scripts.demo_buyer_case import AGREEMENT, LETTER, RECEIPTS, pdf
 
 ROOT = Path(__file__).resolve().parents[2]
-SITE = os.environ.get("NYAYASIM_E2E_SITE", "http://localhost:3100")
+SITE = os.environ.get("CONTRACTIQ_E2E_SITE", "http://localhost:3100")
 API = SITE + "/api/v1"
 CREDS = ROOT / "data" / "demo-credentials.txt"
 STATE = ROOT / "data" / "e2e_state.json"
@@ -106,11 +106,11 @@ def latest_verify_token() -> str | None:
 
 def client() -> httpx.Client:
     c = httpx.Client(headers=HEADERS, timeout=180, follow_redirects=False)
-    # Private demo mode (NYAYASIM_E2E_SITE_PASSWORD): carry the gate cookie a browser gets after
+    # Private demo mode (CONTRACTIQ_E2E_SITE_PASSWORD): carry the gate cookie a browser gets after
     # entering the password. Set directly, so the many short-lived clients here do not use up the
     # gate's rate limit (10 password attempts per 10 minutes); POST /gate itself is tested in
     # tests/test_gate.py and by `gate` below.
-    gate = os.environ.get("NYAYASIM_E2E_SITE_PASSWORD")
+    gate = os.environ.get("CONTRACTIQ_E2E_SITE_PASSWORD")
     if gate:
         from app.auth.gate import GATE_COOKIE, gate_token
 
@@ -147,10 +147,10 @@ def setup() -> None:
         check("verification link written to data/outbox", token is not None)
         r = c.post(f"{API}/auth/verify-email", json={"token": token})
         check("email verified with the outbox link", r.status_code == 200, f"HTTP {r.status_code}")
-        r = login(c) if "nyayasim_session" not in c.cookies else r
+        r = login(c) if "contractiq_session" not in c.cookies else r
     else:
         info("demo user already exists; signup skipped")
-    check("login", r.status_code == 200 or "nyayasim_session" in c.cookies, f"HTTP {r.status_code}")
+    check("login", r.status_code == 200 or "contractiq_session" in c.cookies, f"HTTP {r.status_code}")
     set_cookie = " ".join(v for k, v in r.headers.multi_items() if k.lower() == "set-cookie").lower()
     check(
         "session cookie is HttpOnly and SameSite=Lax",

@@ -25,7 +25,7 @@ export default function NewCasePage() {
   const [dragging, setDragging] = useState(false);
   const [consent, setConsent] = useState(false);
   const [isDemo, setIsDemo] = useState(false);
-  // Only developer machines allow demo cases (NYAYASIM_ALLOW_DEMO_CASES); on a real site the option is hidden.
+  // Only developer machines allow demo cases (CONTRACTIQ_ALLOW_DEMO_CASES); on a real site the option is hidden.
   const [demoAllowed, setDemoAllowed] = useState(false);
   useEffect(() => {
     authConfig().then((c) => setDemoAllowed(c.demo_cases)).catch(() => setDemoAllowed(false));

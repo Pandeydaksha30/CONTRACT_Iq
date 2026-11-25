@@ -1,7 +1,7 @@
 # ContractIQ deployment guide
 
 **Status (17 Nov 2026):** the all-in-one Docker stack was built and run on this machine with private
-demo mode (TEST_REPORT.md). Vercel, Render and the other hosts below have **not** been tried: no
+demo mode (docs/test-report.md). Vercel, Render and the other hosts below have **not** been tried: no
 account was used, and nothing is publicly deployed.
 
 ## Choose a deployment
@@ -20,13 +20,13 @@ gives a site where the AI features work on fictional documents and only invited 
 
 | Setting | Where | Effect |
 |---|---|---|
-| `NYAYASIM_SITE_PASSWORD` (API) and `SITE_PASSWORD` (website) | the **same** value, at least 10 characters | One shared password in front of the whole site. Visitors see a password page first; the API refuses everything except `/health` until it is entered, so calling the API directly does not bypass it |
-| `NYAYASIM_ALLOW_DEMO_CASES=true` (API) | only with the site password | Users can mark a case as a fictional demo; the AI steps (answers, clause analysis, facts, agents, hearing) then run for it |
-| `NYAYASIM_PRIVATE_LLM_OK` | keep `false` | Real (non-demo) documents are never sent to the model |
+| `CONTRACTIQ_SITE_PASSWORD` (API) and `SITE_PASSWORD` (website) | the **same** value, at least 10 characters | One shared password in front of the whole site. Visitors see a password page first; the API refuses everything except `/health` until it is entered, so calling the API directly does not bypass it |
+| `CONTRACTIQ_ALLOW_DEMO_CASES=true` (API) | only with the site password | Users can mark a case as a fictional demo; the AI steps (answers, clause analysis, facts, agents, hearing) then run for it |
+| `CONTRACTIQ_PRIVATE_LLM_OK` | keep `false` | Real (non-demo) documents are never sent to the model |
 
 Without an email provider nobody receives the confirmation email. Confirm or create accounts with
 the admin command, run where the API runs (Render shell, `docker compose exec api`, or locally
-with `NYAYASIM_DATABASE_URL` set to the database):
+with `CONTRACTIQ_DATABASE_URL` set to the database):
 
 ```bash
 python -m scripts.admin_users list
@@ -37,16 +37,16 @@ python -m scripts.admin_users reset-password reviewer@example.com
 
 `create` and `reset-password` print a generated password once; give it privately and ask the
 person to change it on the Account page. For a site open to the public, set up SMTP instead
-(`NYAYASIM_SMTP_*`: Brevo, Amazon SES, Gmail with an app password, …).
+(`CONTRACTIQ_SMTP_*`: Brevo, Amazon SES, Gmail with an app password, …).
 
 ## A. Vercel + Render, native Python
 
 1. Push the repository to GitHub.
 2. **Render:** New > Blueprint, choose the repository. It creates `contractiq-db` (PostgreSQL 17)
    and `contractiq-api` (native Python, 2 GB plan, a 5 GB disk at `/var/data`) from `render.yaml`.
-   Fill in when asked: `NYAYASIM_PUBLIC_URL` and `NYAYASIM_CORS_ORIGINS` (the Vercel address, can
-   be set after step 3), `GEMINI_API_KEY`, `NYAYASIM_SITE_PASSWORD`, and for demo mode set
-   `NYAYASIM_ALLOW_DEMO_CASES=true`.
+   Fill in when asked: `CONTRACTIQ_PUBLIC_URL` and `CONTRACTIQ_CORS_ORIGINS` (the Vercel address, can
+   be set after step 3), `GEMINI_API_KEY`, `CONTRACTIQ_SITE_PASSWORD`, and for demo mode set
+   `CONTRACTIQ_ALLOW_DEMO_CASES=true`.
 3. **Vercel:** Add New > Project, Root Directory `frontend`. Environment variables: `API_URL` =
    `https://<service>.onrender.com`, and `SITE_PASSWORD` = the same site password. Deploy.
 4. Load the public orders (step "Public order data" below). Check `/health` on both addresses.
@@ -69,9 +69,9 @@ Build and run the API image (build from the repository root):
 docker build -f backend/Dockerfile -t contractiq-api .
 ```
 
-Give the container these environment variables: `NYAYASIM_DATABASE_URL` (any PostgreSQL 17 with
-pgvector; `postgres://` URLs are accepted), `NYAYASIM_PUBLIC_URL` and `NYAYASIM_CORS_ORIGINS` (the
-website address), `NYAYASIM_COOKIE_SECURE=true`, and the optional ones above. Mount persistent
+Give the container these environment variables: `CONTRACTIQ_DATABASE_URL` (any PostgreSQL 17 with
+pgvector; `postgres://` URLs are accepted), `CONTRACTIQ_PUBLIC_URL` and `CONTRACTIQ_CORS_ORIGINS` (the
+website address), `CONTRACTIQ_COOKIE_SECURE=true`, and the optional ones above. Mount persistent
 storage at `/srv/data` (uploads, email outbox, model cache). The host sets `$PORT`; health check
 path `/health`. Then deploy the website on Vercel as in A, with `API_URL` set to the container's
 address. The website can also run as a container: `docker build --build-arg API_URL=... -t contractiq-web frontend`.
@@ -121,15 +121,15 @@ classifier files are in the repository and in the API image; nothing to copy.
 
 | Variable | Meaning | Default |
 |---|---|---|
-| `NYAYASIM_DATABASE_URL` | PostgreSQL 17 with pgvector | local dev database |
-| `NYAYASIM_PUBLIC_URL`, `NYAYASIM_CORS_ORIGINS` | the website address (the only origin allowed to change data) | localhost:3100 |
-| `NYAYASIM_COOKIE_SECURE` | `true` on HTTPS; also hides `/docs` | `false` |
-| `NYAYASIM_DATA_DIR` | uploads, outbox, model cache; persistent storage | `data/` (`/srv/data` in the image) |
-| `NYAYASIM_SITE_PASSWORD` | private demo mode | empty (open site) |
-| `NYAYASIM_ALLOW_DEMO_CASES` | AI on fictional demo cases | `false` |
-| `NYAYASIM_PRIVATE_LLM_OK` | send real documents to the model | `false`, keep it |
-| `GEMINI_API_KEY`, `NYAYASIM_FALLBACK_MODELS`, `NYAYASIM_MODEL_RETRIES` | model and fallback | empty / `gemini-3.6-flash` / 2 |
-| `NYAYASIM_SMTP_*`, `NYAYASIM_GOOGLE_CLIENT_*` | email, Google sign-in | empty |
+| `CONTRACTIQ_DATABASE_URL` | PostgreSQL 17 with pgvector | local dev database |
+| `CONTRACTIQ_PUBLIC_URL`, `CONTRACTIQ_CORS_ORIGINS` | the website address (the only origin allowed to change data) | localhost:3100 |
+| `CONTRACTIQ_COOKIE_SECURE` | `true` on HTTPS; also hides `/docs` | `false` |
+| `CONTRACTIQ_DATA_DIR` | uploads, outbox, model cache; persistent storage | `data/` (`/srv/data` in the image) |
+| `CONTRACTIQ_SITE_PASSWORD` | private demo mode | empty (open site) |
+| `CONTRACTIQ_ALLOW_DEMO_CASES` | AI on fictional demo cases | `false` |
+| `CONTRACTIQ_PRIVATE_LLM_OK` | send real documents to the model | `false`, keep it |
+| `GEMINI_API_KEY`, `CONTRACTIQ_FALLBACK_MODELS`, `CONTRACTIQ_MODEL_RETRIES` | model and fallback | empty / `gemini-3.6-flash` / 2 |
+| `CONTRACTIQ_SMTP_*`, `CONTRACTIQ_GOOGLE_CLIENT_*` | email, Google sign-in | empty |
 | `PORT`, `FORWARDED_ALLOW_IPS` | container only: listening port, trusted proxies | 8000, `*` |
 
 Website: `API_URL` (build time) and `SITE_PASSWORD` (run time).

@@ -1,6 +1,6 @@
 """Blind, independent annotation of orders, agreement, adjudication, and scoring against gold.
 
-Protocol (MODEL_TRAINING_GUIDE.md / MODEL_EVALUATION.md):
+Protocol (docs/model-training.md / docs/model-evaluation.md):
 1. `export`: one sheet per annotator for the same sample of benchmark orders. Each row gives the
    order and its PDF and has EMPTY answer columns. The model's value is never shown, so
    annotators are not anchored by it.

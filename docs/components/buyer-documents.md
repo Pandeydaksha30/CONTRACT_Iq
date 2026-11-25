@@ -21,7 +21,7 @@
 ## Privacy rule
 
 Buyers' documents are private. Extraction is **refused (HTTP 403)** unless the case is a
-fictional demo or `NYAYASIM_PRIVATE_LLM_OK=true` is set for a model that does not retain
+fictional demo or `CONTRACTIQ_PRIVATE_LLM_OK=true` is set for a model that does not retain
 data. The free Gemini tier may retain data, so leave it `false` until a paid no-retention
 option is in place. Upload and OCR run locally and are not affected.
 
@@ -51,4 +51,4 @@ per document; the case screen should group them as one fact with several sources
 - OCR runs on a worker thread, so the API keeps answering other users while a scan is read.
 - **Demo cases** (documents that may go to a data-retaining model) cannot be created by users. They
   come only from `python -m scripts.demo_buyer_case`, or on a developer PC started with
-  `.\scripts\dev-api.ps1 -AllowDemo` (`NYAYASIM_ALLOW_DEMO_CASES=true`, never set in production).
+  `.\scripts\dev-api.ps1 -AllowDemo` (`CONTRACTIQ_ALLOW_DEMO_CASES=true`, never set in production).

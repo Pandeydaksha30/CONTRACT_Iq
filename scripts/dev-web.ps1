@@ -1,4 +1,4 @@
-# Start the NyayaSim website for local development (PowerShell).
+# Start the ContractIQ website for local development (PowerShell).
 #   .\scripts\dev-web.ps1                # http://localhost:3100, API expected on :8000
 #   .\scripts\dev-web.ps1 -Port 3110 -ApiPort 8010
 param([int]$Port = 3100, [int]$ApiPort = 8000)

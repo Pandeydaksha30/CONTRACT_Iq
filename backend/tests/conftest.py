@@ -2,7 +2,7 @@
 configured server, migrated from scratch and dropped afterwards.
 
 If Postgres is not reachable the database tests are skipped with a visible reason
-(pytest is configured with -rs). Set NYAYASIM_REQUIRE_DB=1 to make that a failure instead.
+(pytest is configured with -rs). Set CONTRACTIQ_REQUIRE_DB=1 to make that a failure instead.
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ def db_engine() -> Iterator[Engine]:
             f"Postgres not reachable ({type(e).__name__}: {e}). "
             "Start it: docker compose -f infra/docker-compose.yml up -d"
         )
-        if os.environ.get("NYAYASIM_REQUIRE_DB") == "1":
+        if os.environ.get("CONTRACTIQ_REQUIRE_DB") == "1":
             pytest.fail(msg)
         pytest.skip(msg)
 

@@ -1,7 +1,7 @@
 [project]
-name = "nyayasim-backend"
+name = "contractiq-backend"
 version = "0.1.0"
-description = "NyayaSim API: deterministic calculators, order store, retrieval and agents."
+description = "ContractIQ API: contract Q&A, verified facts, calculator, precedent search, hearing simulation and agents."
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "fastapi==0.118.0",

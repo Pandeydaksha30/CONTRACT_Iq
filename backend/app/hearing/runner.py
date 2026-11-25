@@ -40,7 +40,7 @@ def prepare_case_hearing(
     if not (case.is_demo or settings.private_llm_ok):
         raise PrivateDataBlocked(
             "A hearing sends the case facts to the model, which may retain data. It runs only for demo "
-            "cases until a no-retention model is configured (NYAYASIM_PRIVATE_LLM_OK=true)."
+            "cases until a no-retention model is configured (CONTRACTIQ_PRIVATE_LLM_OK=true)."
         )
     cutoff = cutoff or date.today()
     ci = from_buyer_case(s, case_id, case.claim_type, cutoff)

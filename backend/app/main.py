@@ -21,7 +21,7 @@ from app.auth.gate import router as gate_router
 from app.config import settings
 from app.middleware import SecurityMiddleware
 
-log = logging.getLogger("nyayasim")
+log = logging.getLogger("contractiq")
 
 
 def _housekeeping_once() -> None:
@@ -66,7 +66,7 @@ async def lifespan(_: FastAPI):
         # Demo cases send document text to the model; on an open public site anyone could tick
         # "demo" for a real document. Private demo mode (a site password) is meant for this.
         log.warning(
-            "NYAYASIM_ALLOW_DEMO_CASES is on for an HTTPS site without NYAYASIM_SITE_PASSWORD: "
+            "CONTRACTIQ_ALLOW_DEMO_CASES is on for an HTTPS site without CONTRACTIQ_SITE_PASSWORD: "
             "anyone can mark a real document as a demo and send it to the model."
         )
     try:

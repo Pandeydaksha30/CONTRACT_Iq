@@ -93,7 +93,7 @@ Unit tests (250, about 3 minutes):
 
 ```powershell
 cd C:\Users\pande\Downloads\CONTRACT_IQ\contractiq\backend
-$env:NYAYASIM_REQUIRE_DB = "1"; .\.venv\Scripts\python.exe -m pytest -q
+$env:CONTRACTIQ_REQUIRE_DB = "1"; .\.venv\Scripts\python.exe -m pytest -q
 ```
 
 ## Demo user
@@ -122,7 +122,7 @@ Get-ChildItem C:\Users\pande\Downloads\CONTRACT_IQ\contractiq\data\outbox | Sort
 | Website shows "refused to connect" | Window 3 is not running. Start it again. |
 | Pages load but nothing saves, or login fails with a server error | Window 2 (backend) is not running, or Docker is stopped. |
 | "Demo cases cannot be created on this server" when creating a demo case | The backend was started without `-AllowDemo`. |
-| Hearing or fact extraction fails with a "busy" or 429 / 503 message | Gemini free tier is overloaded. Wait a minute and retry, or show the stored hearing (DEMO_GUIDE.md). |
+| Hearing or fact extraction fails with a "busy" or 429 / 503 message | Gemini free tier is overloaded. Wait a minute and retry, or show the stored hearing (docs/demo-guide.md). |
 | Port already in use | An old server is still running. Close its window, or use `-Port 8010` (API) and `-Port 3110 -ApiPort 8010` (web), and start the API with `-WebPort 3110`. |
 
 ## Backup and restore

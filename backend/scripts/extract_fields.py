@@ -52,7 +52,7 @@ def main() -> int:
     args = ap.parse_args()
 
     if settings.gemini_api_key is None:
-        print("GEMINI_API_KEY is not set. Add it to backend/.env (see docs/extraction.md).")
+        print("GEMINI_API_KEY is not set. Add it to backend/.env (see docs/components/extraction.md).")
         return 2
     key = settings.gemini_api_key.get_secret_value()
 

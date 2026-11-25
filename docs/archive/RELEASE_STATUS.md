@@ -10,7 +10,7 @@ running the thing named; nothing is reported from a build alone.
 | Tag | `v1.0.0-rc1` (local; nothing has been pushed) |
 | Package | `C:\Users\pande\Downloads\CONTRACT_IQ\NYAYASIM_FINAL_DEPLOY.zip`, about 198 MB, 303 files |
 | Earlier packages, kept | `NYAYASIM_COMPLETE_PROJECT.zip`, `NYAYASIM_COMPLETE_PROJECT_before_15Nov_changes.zip` |
-| Setup instructions | `DEPLOYMENT_GUIDE.md` |
+| Setup instructions | `docs/deployment.md` |
 
 It is a release candidate, not a public release: it deploys and works as described here, and the
 items under "Manual steps" and "Limitations" still stand between it and real buyers.
@@ -39,7 +39,7 @@ In this session:
 - Container paths in scripts and the guide are passed inside `sh -c`, so Git Bash on Windows does
   not rewrite them.
 - Website image includes `public/` (the example's page pictures).
-- `DEPLOYMENT_GUIDE.md` rewritten.
+- `docs/deployment.md` rewritten.
 - Report page: order numbers no longer break across two lines.
 
 ## 2. Tests run and results
@@ -97,7 +97,7 @@ change. If you see that error, run the build again.
 ## 4. Clean deployment status
 
 Done from the ZIP, extracted to `C:\NyRC2`, away from the development folder, following
-`DEPLOYMENT_GUIDE.md` section 4 (ports 3300 and 8300 so it could run beside the development app):
+`docs/deployment.md` section 4 (ports 3300 and 8300 so it could run beside the development app):
 
 1. `docker compose ... up -d --build`: all services started.
 2. Fresh database; the `migrate` service exited 0; schema version `0010`.

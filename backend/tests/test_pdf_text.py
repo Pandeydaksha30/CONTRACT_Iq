@@ -1,5 +1,5 @@
 """Text extraction tests. OCR tests need Tesseract; without it they are skipped with a
-printed reason, or fail when NYAYASIM_REQUIRE_OCR=1."""
+printed reason, or fail when CONTRACTIQ_REQUIRE_OCR=1."""
 
 import os
 
@@ -18,7 +18,7 @@ def require_ocr():
     ocr = find_ocr()
     if ocr is None:
         msg = "Tesseract not installed (see README: OCR)"
-        if os.environ.get("NYAYASIM_REQUIRE_OCR") == "1":
+        if os.environ.get("CONTRACTIQ_REQUIRE_OCR") == "1":
             pytest.fail(msg)
         pytest.skip(msg)
     return ocr

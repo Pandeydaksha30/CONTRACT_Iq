@@ -13,7 +13,7 @@ from app.auth.security import new_token, token_hash
 from app.config import settings
 from app.db.models import AuthEvent, AuthToken, User, UserSession
 
-SESSION_COOKIE = "nyayasim_session"
+SESSION_COOKIE = "contractiq_session"
 # A session's last_seen_at is written at most this often, so reads do not all become writes.
 _TOUCH_EVERY = timedelta(minutes=5)
 TOKEN_TTL = {"verify_email": timedelta(hours=24), "reset_password": timedelta(hours=1)}

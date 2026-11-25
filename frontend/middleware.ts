@@ -30,7 +30,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  if (PRIVATE.some((r) => r.test(pathname)) && !req.cookies.has("nyayasim_session")) {
+  if (PRIVATE.some((r) => r.test(pathname)) && !req.cookies.has("contractiq_session")) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.search = `?next=${encodeURIComponent(pathname + search)}`;

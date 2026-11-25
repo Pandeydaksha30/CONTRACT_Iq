@@ -2,7 +2,7 @@
 
 Why a rule: across the whole text "refund" is boilerplate (85 of 178 delay orders in training say
 it), but inside the relief section it states the claim. Developed on train and validation orders
-only (MODEL_TRAINING_GUIDE.md). Returns None when there is no relief section or no clear wording;
+only (docs/model-training.md). Returns None when there is no relief section or no clear wording;
 the caller then falls back to the trained model.
 """
 

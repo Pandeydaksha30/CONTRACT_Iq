@@ -117,7 +117,7 @@ def test_signup_verify_login_logout(env):
     c = client()
     user = signup_and_verify(c, sent)
     assert user["email"] == "asha@example.com" and user["email_verified"]
-    cookie = c.cookies.get("nyayasim_session")
+    cookie = c.cookies.get("contractiq_session")
     assert cookie
     assert c.get("/api/v1/auth/me").json()["name"] == "Asha"
     # The cookie is httpOnly + SameSite=Lax.

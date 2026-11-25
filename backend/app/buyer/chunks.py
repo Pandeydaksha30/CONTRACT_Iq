@@ -17,7 +17,7 @@ from app.db.models import CaseDocument, CaseDocumentChunk, CaseDocumentPage
 from app.ingestion.chunker import chunk_page
 from app.retrieval.embedder import Embedder
 
-log = logging.getLogger("nyayasim.rag")
+log = logging.getLogger("contractiq.rag")
 
 
 def index_document(s: Session, document_id: uuid.UUID, embedder: Embedder | None) -> int:

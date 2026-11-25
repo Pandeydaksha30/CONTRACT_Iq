@@ -66,5 +66,5 @@ def test_no_site_password_means_no_gate(monkeypatch):
 def test_empty_site_password_setting_means_off(monkeypatch):
     from app.config import Settings
 
-    monkeypatch.setenv("NYAYASIM_SITE_PASSWORD", "  ")
+    monkeypatch.setenv("CONTRACTIQ_SITE_PASSWORD", "  ")
     assert Settings(_env_file=None).site_password is None

@@ -25,7 +25,7 @@ from app.config import settings
 AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 ISSUERS = {"https://accounts.google.com", "accounts.google.com"}
-STATE_COOKIE = "nyayasim_oauth"
+STATE_COOKIE = "contractiq_oauth"
 
 
 class GoogleError(Exception):

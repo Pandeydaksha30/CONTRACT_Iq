@@ -1,6 +1,6 @@
 """Contract clause analysis: the rights, obligations and penalties of each party, from the case's
 own documents. This is the mid-viva eContractIQ "benefits and obligations" feature
-(docs/history/midviva/econtractiq-code/rag_pipeline.py, analyze_benefits), rebuilt on the current
+(docs/archive/midviva/econtractiq-code/rag_pipeline.py, analyze_benefits), rebuilt on the current
 retrieval and with one change: every clause the model reports must quote the document, and the
 quote is checked by code against the stored passage. A clause whose quote is not found is dropped.
 

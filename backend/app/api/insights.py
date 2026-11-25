@@ -50,7 +50,7 @@ def _models_dir() -> Path:
     return _REPO_MODELS
 
 
-# Measured once on the held-out test orders (MODEL_TRAINING_GUIDE.md). Shown with every prediction.
+# Measured once on the held-out test orders (docs/model-training.md). Shown with every prediction.
 MEASURED = {
     "claim_type": {"accuracy_pct": 74.3, "macro_f1": 0.455, "test_orders": 74, "majority_baseline_pct": 73.0},
     "outcome": {"accuracy_pct": 50.8, "macro_f1": 0.340, "test_orders": 59, "majority_baseline_pct": 57.6},

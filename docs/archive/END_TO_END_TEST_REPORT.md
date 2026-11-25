@@ -5,7 +5,7 @@ PostgreSQL 17 + pgvector 0.8 in Docker). All requests went through the website a
 `/api` forwarding and the session cookie were exercised. Only fictional documents were used
 (`demo/sample-documents/`, the invented "Mehra v. Arvant Infra" case).
 
-Tool: `backend/scripts/e2e_check.py` (commands in RUN_LOCAL.md). Results below are the actual
+Tool: `backend/scripts/e2e_check.py` (commands in docs/run-local.md). Results below are the actual
 output of this run; nothing is marked passed without having been run.
 
 **Totals: 49 checks, 49 passed, 0 failed.** Plus 18 pages loaded without error.
@@ -16,7 +16,7 @@ output of this run; nothing is marked passed without having been run.
   by loading every page's server-rendered HTML as the logged-in user.
 - **Not tested: clicking through the pages in a real browser window in this run** (the screenshot
   tool was unavailable because the app window was hidden). The pages were last clicked through by
-  hand on 10 Nov. Do one manual pass before the demo (DEMO_GUIDE.md).
+  hand on 10 Nov. Do one manual pass before the demo (docs/demo-guide.md).
 - Not tested: Google sign-in (no Google client configured), real email delivery (no SMTP), any
   public deployment (none exists).
 

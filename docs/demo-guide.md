@@ -1,11 +1,11 @@
 # Demonstration guide
 
 For a 5 to 7 minute demonstration of ContractIQ running on this laptop. Start-up commands are in
-RUN_LOCAL.md; test evidence is in TEST_REPORT.md.
+docs/run-local.md; test evidence is in docs/test-report.md.
 
 ## Before the professor arrives (15 minutes)
 
-1. Start Docker Desktop, then run these in three PowerShell windows (details: RUN_LOCAL.md):
+1. Start Docker Desktop, then run these in three PowerShell windows (details: docs/run-local.md):
 
    ```powershell
    docker compose -f C:\Users\pande\Downloads\CONTRACT_IQ\contractiq\infra\docker-compose.yml up -d
@@ -150,7 +150,7 @@ cd C:\Users\pande\Downloads\CONTRACT_IQ\contractiq\backend
 ```
 
 Note: that command scores the held-out test set again and overwrites the saved model file, so run
-it only if asked. Otherwise show the numbers in MODEL_TRAINING_GUIDE.md.
+it only if asked. Otherwise show the numbers in docs/model-training.md.
 
 ## 4. Results to state (1 minute)
 

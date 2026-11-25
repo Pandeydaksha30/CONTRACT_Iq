@@ -107,7 +107,7 @@ def test_negative_extension_rejected():
         add_months(date(2021, 1, 1), -1)
 
 
-# ── End date of delay interest and worked sample cases (FINANCIAL_CALCULATOR_AUDIT.md) ──
+# ── End date of delay interest and worked sample cases (docs/calculator.md) ──
 # Expected figures were computed separately as P x rate x days / 36,500 and rounded to the paisa.
 RATE_2026 = Decimal("10.80")  # SBI MCLR 8.80% + 2%, as applied in HRERA Gurugram orders, Jul-Oct 2026
 DUE = date(2021, 6, 30)

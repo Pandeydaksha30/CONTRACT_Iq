@@ -35,7 +35,7 @@ is calculated by code, never by the language model.
 | Delete a document | Yes | Yes (and a whole case), with everything derived from it | Same |
 | User accounts and privacy | None; CORS open to all origins | Accounts, email confirmation, sessions, per-user cases (others get 404), rate limits; real documents never sent to the model | Same |
 | Fact extraction and verification | No | Dates, payments, possession date, each with page and quote; buyer confirms; unconfirmed facts never used later | Same |
-| Financial claim calculator | No | Delay interest and refund, deterministic, per payment | **Audited and corrected** (FINANCIAL_CALCULATOR_AUDIT.md): offer-of-possession end date, verified Rule 15 source, current 10.80% rate |
+| Financial claim calculator | No | Delay interest and refund, deterministic, per payment | **Audited and corrected** (docs/calculator.md): offer-of-possession end date, verified Rule 15 source, current 10.80% rate |
 | Legal precedent retrieval | No | 2,209 HRERA Gurugram orders (~73,000 passages), search with a decision-date cutoff | Same |
 | Citation verification | No | Code checks every cited quote against the stored order (precision 100%, recall 98.3% on held-out orders) | Same |
 | Simulated hearing | No | Buyer's advocate, builder's advocate, citation gate, judge (LangGraph) | Same |
@@ -67,4 +67,4 @@ Mid-viva features not carried over, and why:
 | Groq Llama model | Replaced by Gemini in the NyayaSim build | One provider; a Gemini fallback model handles busy periods |
 | ChromaDB | Replaced by pgvector | One database for users, cases, orders and vectors, with per-case filtering in SQL |
 
-The mid-viva code and its documents are kept in `docs/history/midviva/`.
+The mid-viva code and its documents are kept in `docs/archive/midviva/`.

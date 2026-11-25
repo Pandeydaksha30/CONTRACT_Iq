@@ -20,7 +20,7 @@ from app.db.session import get_engine
 from app.hearing.agents import LLM
 from app.hearing.runner import PreparedHearing, execute_hearing
 
-log = logging.getLogger("nyayasim.hearing")
+log = logging.getLogger("contractiq.hearing")
 
 # Two hearings at a time per server: each makes several model calls in a row.
 _pool = ThreadPoolExecutor(max_workers=2, thread_name_prefix="hearing")

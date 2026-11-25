@@ -69,7 +69,7 @@ def get_search_embedder() -> Embedder | None:
     try:
         emb = _embedder()
     except Exception:  # noqa: BLE001 - logged with traceback; the app keeps working without vectors
-        logging.getLogger("nyayasim.search").exception(
+        logging.getLogger("contractiq.search").exception(
             "Embedding model could not be loaded; search falls back to keywords"
         )
         _embedder_failed_at = time.monotonic()

@@ -3,7 +3,7 @@
 Generated from the FastAPI app (`app.openapi()`), 17 Nov 2026. Interactive version with
 request and response schemas: http://localhost:8000/docs while the backend runs locally (switched off under HTTPS).
 
-Authentication: session cookie `nyayasim_session` set by `POST /api/v1/auth/login` (HttpOnly, SameSite=Lax; the
+Authentication: session cookie `contractiq_session` set by `POST /api/v1/auth/login` (HttpOnly, SameSite=Lax; the
 internal name is kept from the earlier build so existing sessions stay valid).
 State-changing requests must come from an allowed Origin (CSRF check). Someone else's case answers 404.
 

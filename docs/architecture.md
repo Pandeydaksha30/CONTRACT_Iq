@@ -1,6 +1,6 @@
 # ContractIQ architecture (13 Nov 2026)
 
-Current system. (`docs/history/midviva/econtractiq-architecture.md` describes the mid-viva eContractIQ prototype with
+Current system. (`docs/archive/midviva/econtractiq-architecture.md` describes the mid-viva eContractIQ prototype with
 ChromaDB and Groq and is kept only for history.)
 
 ```text
@@ -43,7 +43,7 @@ Endpoints: `GET /passages` (no model, all cases), `POST /ask` (demo cases), `GET
 A LangGraph graph `plan → act → plan … → answer → verify`:
 
 - **plan**: the model returns one `Step` (a tool and its arguments, or `finish`). Nothing in the code
-  fixes the order of tools; the tool sequence differs by objective (see TEST_REPORT.md, live runs).
+  fixes the order of tools; the tool sequence differs by objective (see docs/test-report.md, live runs).
 - **act**: code runs the tool; the result (or the error) becomes an observation.
 - **answer**: the model writes the answer from the observations only, citing evidence labels.
 - **verify**: code checks every citation: D-labels against document passages, O-labels and
@@ -83,5 +83,5 @@ All new migrations have a `downgrade()` that drops only the new tables.
 ## Privacy rule
 
 Text of a case is sent to the model (Gemini) only when the case is a fictional demo, or when
-`NYAYASIM_PRIVATE_LLM_OK=true` is set after a zero-retention provider is configured. Retrieval
+`CONTRACTIQ_PRIVATE_LLM_OK=true` is set after a zero-retention provider is configured. Retrieval
 (`/passages`) is local and works for every case.

@@ -1,4 +1,4 @@
-"""Alembic environment: runs migrations against NYAYASIM_DATABASE_URL (or an explicit URL
+"""Alembic environment: runs migrations against CONTRACTIQ_DATABASE_URL (or an explicit URL
 passed by tests via config attributes)."""
 
 from alembic import context

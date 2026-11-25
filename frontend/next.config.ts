@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // Model calls (fact extraction, document answers) can take minutes when Gemini is busy and the
   // backend retries. Without this the local /api forwarding gives up after 30 s with a bare HTTP 500.
-  // On Vercel the platform's own proxy limit applies instead (DEPLOYMENT_GUIDE.md).
+  // On Vercel the platform's own proxy limit applies instead (docs/deployment.md).
   experimental: { proxyTimeout: 600_000 },
   async rewrites() {
     return [

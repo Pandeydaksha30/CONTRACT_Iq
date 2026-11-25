@@ -65,7 +65,7 @@ winget install --id UB-Mannheim.TesseractOCR -e
 ```
 
 Hindi data is not in the installer's default set. Put the official files in `data/tessdata`
-(git-ignored; found automatically, or set `NYAYASIM_TESSDATA`):
+(git-ignored; found automatically, or set `CONTRACTIQ_TESSDATA`):
 
 ```powershell
 curl.exe -sSL --fail -o data\tessdata\hin.traineddata https://github.com/tesseract-ocr/tessdata/raw/main/hin.traineddata

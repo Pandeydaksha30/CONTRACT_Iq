@@ -1,6 +1,6 @@
 """Outgoing email for verification and password-reset links.
 
-With NYAYASIM_SMTP_HOST set, mail goes out over SMTP with STARTTLS (port 587) or TLS (465).
+With CONTRACTIQ_SMTP_HOST set, mail goes out over SMTP with STARTTLS (port 587) or TLS (465).
 Without it (local development) each message is written to data/outbox/ as a text file and its
 link is logged, so the flow can be completed without a mail server. Production must set SMTP.
 """
@@ -15,7 +15,7 @@ from email.message import EmailMessage
 
 from app.config import settings
 
-log = logging.getLogger("nyayasim.mail")
+log = logging.getLogger("contractiq.mail")
 OUTBOX = settings.data_dir / "outbox"
 
 

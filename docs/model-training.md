@@ -15,7 +15,7 @@ free Gemini tier offers no fine-tuning.
 
 ## Data and splits
 
-- Source: public HRERA Gurugram orders (`docs/ingestion.md`). Labels: `case_records`, extracted by
+- Source: public HRERA Gurugram orders (`docs/components/ingestion.md`). Labels: `case_records`, extracted by
   Gemini with every value's quote verified against the stored page, **not yet checked by people**.
 - Splits: `benchmark/split_v1.json`, by decision date (train < 2024 <= validation < 2025 <= test),
   frozen. Duplicates (same PDF or complaint number) never cross splits.
@@ -72,7 +72,7 @@ Confusion (rows = truth, columns = predicted, same label order):
   Only 6 of 15 refund cases are recognised from a text whose relief section normally says "refund".
   That points at the labels or at the facts cut dropping the relief section, not at too little data.
 - So more machine-made labels of the same kind are not the way forward. The next useful steps are
-  the human label check (`docs/annotation-guide.md`) and an error review of the claim-type misses
+  the human label check (`docs/components/annotation-guide.md`) and an error review of the claim-type misses
   on **validation** orders.
 - Disclosure: the same 59 / 74 test cases have now been scored twice by this model family. Any
   further change must be chosen on validation and confirmed on a new test period.
@@ -110,7 +110,7 @@ validation: 27 of 30 (was 22). The too-early cut (cause 1, 37 orders) is **not**
 The rule alone scores 81.9% on the 254 training orders, so about 80-83% is what this approach
 gives against the current labels: better than everything before, still far from 95%, and "other"
 is never predicted. The rule is a script experiment, not yet part of `app/ml`; it has not been
-scored on test. Note: the LLM "facts input" results in MODEL_EVALUATION.md were measured with the
+scored on test. Note: the LLM "facts input" results in docs/model-evaluation.md were measured with the
 earlier cut (before the relief section was rescued).
 
 ### Relief-section rule built into the claim-type classifier (11 Nov 2026)
@@ -132,7 +132,7 @@ entire amount" and are labelled delayed possession; order 13236 asks for a refun
 "other"; orders 13845, 13847, 13848 and 13851 have the same relief text and carry two different
 labels. A method cannot score 95% against labels that disagree with themselves on identical text;
 a number that high on these labels would mean the method had learned the label noise. The way to
-95% for claim type is checked labels (two annotators, `docs/annotation-guide.md`), then re-scoring.
+95% for claim type is checked labels (two annotators, `docs/components/annotation-guide.md`), then re-scoring.
 
 **Test, scored once for this configuration (74 orders, 11 Nov 2026):**
 

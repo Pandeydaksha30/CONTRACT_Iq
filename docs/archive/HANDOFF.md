@@ -53,7 +53,7 @@ Also:
 | Local DB + Redis (Docker) | `contractiq\infra\docker-compose.yml` → containers `infra-postgres-1` (127.0.0.1:5432), `infra-redis-1` |
 | Production deploy setup | `contractiq\infra\docker-compose.prod.yml`, `infra\Caddyfile`, `infra\.env.prod.example`, `backend\Dockerfile`, `frontend\Dockerfile`; guide `docs\deploy.md` |
 | Docs per step | `contractiq\docs\` (data-gate, ingestion, extraction, buyer-documents, search, citations, hearing, backtest, deploy) |
-| Architecture notes | `contractiq\architecture\ARCHITECTURE.md`, `CODE_MAP.md` |
+| Architecture notes | `contractiq\architecture\docs/architecture.md`, `CODE_MAP.md` |
 | Downloaded order PDFs (3.9 GB, git-ignored) | `contractiq\data\orders\hrera_gurugram\<sha256>.pdf` |
 | Hindi OCR data | `contractiq\data\tessdata` |
 | Embedding model cache | `contractiq\data\models` (bge-small-en-v1.5 is the one in use) |
@@ -114,7 +114,7 @@ Tests and checks:
 | dcea538 | Step 9: time-split backtest (train < 2025-01-01, test ≥ 2025, merits classes only); methods: majority, buckets, single LLM, debate; accuracy + Wilson CI, macro-F1, confusion, McNemar |
 | ebcf9c7 | 10-pass review fixes (413 for >25 MB uploads, no open transactions during OCR/model calls everywhere, vector search fills its pool under strict cutoffs, hearing default flash-lite, removed inaccurate privacy/encryption text and fake user), phone-friendly stacked tables, **production Docker + Caddy deploy** (smoke-tested: all containers healthy, OCR eng+hin in container, non-root, Caddy single-origin routing + password verified) |
 | 592cd13 | API allows the local website on both `localhost:3100` and `127.0.0.1:3100` |
-| (9 Nov) | **User accounts**: migration 0007 (users, user_sessions, auth_tokens, auth_events, cases.user_id); email+password (Argon2id, verification, reset, lockout, rate limits), Google OIDC with PKCE, CSRF origin check, security headers, per-user case isolation, account deletion, daily purge; new landing, sign-in/up, account, terms/privacy (drafts) pages; same-origin `/api` forwarding; `infra/deploy.sh`, `export-data.sh`, `import-data.sh`; Caddy without site password by default (`Caddyfile.locked` keeps it). See `docs/accounts.md`, `docs/deploy.md`. Docker stack re-tested end to end |
+| (9 Nov) | **User accounts**: migration 0007 (users, user_sessions, auth_tokens, auth_events, cases.user_id); email+password (Argon2id, verification, reset, lockout, rate limits), Google OIDC with PKCE, CSRF origin check, security headers, per-user case isolation, account deletion, daily purge; new landing, sign-in/up, account, terms/privacy (drafts) pages; same-origin `/api` forwarding; `infra/deploy.sh`, `export-data.sh`, `import-data.sh`; Caddy without site password by default (`Caddyfile.locked` keeps it). See `docs/components/accounts.md`, `docs/deploy.md`. Docker stack re-tested end to end |
 
 API routes: `POST /api/v1/calculations/interest`; `GET/POST /api/v1/cases`; `GET /api/v1/cases/{id}`;
 `POST /api/v1/cases/{id}/documents`; `GET .../documents/{doc}/pages/{n}`; `POST .../facts/extract`;
@@ -161,7 +161,7 @@ Debate vs single: McNemar p = 1.0 (no difference).
 misreading the case summary or the label meaning (e.g. who the complainant is: HRERA also has promoter
 complaints, or the summary built in `app/backtest/dataset.py` / prompt `SINGLE` in
 `app/backtest/run.py` lacks the deciding facts). Do **not** publish these LLM scores in
-`docs/backtest.md` until this is explained. LLM errors (15/17) were Gemini quota 429s, not failures of
+`docs/components/backtest.md` until this is explained. LLM errors (15/17) were Gemini quota 429s, not failures of
 the method, and are recorded as errors, not wrong answers.
 
 ## 9. Pending work, in the recommended order
@@ -170,7 +170,7 @@ the method, and are recorded as errors, not wrong answers.
    cases (e.g. `RERA-GRG-3069-2020`, `RERA-GRG-6170-2022`), compare with the order text, fix, add a test.
 2. **Rerun the backtest with hybrid search** (embeddings are now complete), after the quota resets or
    with a paid key. Better: add a `--resume FILE` / `--methods` option to `scripts/backtest.py` so only
-   errored cases or only LLM methods re-run. Then write the scores into `docs/backtest.md` and commit.
+   errored cases or only LLM methods re-run. Then write the scores into `docs/components/backtest.md` and commit.
 3. **Extract outcomes for the newly fetched orders:** 2,019 fetched but only 248 `case_records`.
    `python -m scripts.extract_fields --limit N`, then `--retry-review --model gemini-3.8-flash --thinking low`.
    More training records = a fairer backtest (only 97 training records now).
@@ -181,7 +181,7 @@ the method, and are recorded as errors, not wrong answers.
 6. **Paid zero-retention LLM** (user to choose provider): add a provider behind the `LLM` interface in
    `app/extraction/gemini.py` / `app/hearing`, then allow real cases (`NYAYASIM_PRIVATE_LLM_OK`).
 7. **Complaint draft for real cases** (frontend `app/cases/[id]/live/not-built.tsx` currently shows "not built yet"; demo-only draft exists). Must cite only verified facts + verified orders.
-8. ~~Real authentication~~ done (docs/accounts.md). Still open: SMTP provider + Google OAuth client
+8. ~~Real authentication~~ done (docs/components/accounts.md). Still open: SMTP provider + Google OAuth client
    (user creates them), 2FA, email change, Redis-backed rate limits if more than one API process.
 9. **DPDP compliance:** consent, deletion, access log and 1-year log retention are done. Still open:
    encryption at rest for uploads, retention for inactive accounts, lawyer review of `/terms` and

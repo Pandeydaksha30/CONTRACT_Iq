@@ -34,7 +34,7 @@ from app.rag.clauses import analyse_clauses
 from app.retrieval.case_search import search_case
 from app.retrieval.embedder import Embedder
 
-log = logging.getLogger("nyayasim.rag")
+log = logging.getLogger("contractiq.rag")
 router = APIRouter(prefix="/api/v1/cases", tags=["document questions"])
 SessionDep = Annotated[Session, Depends(get_session)]
 EmbedderDep = Annotated[Embedder | None, Depends(get_search_embedder)]

@@ -2,7 +2,7 @@
  * Private demo mode (backend/app/auth/gate.py): one shared site password in front of the site.
  *
  * Off unless SITE_PASSWORD is set for the website (the API needs the same value as
- * NYAYASIM_SITE_PASSWORD). The token is HMAC-SHA256 of a fixed label keyed with the password,
+ * CONTRACTIQ_SITE_PASSWORD). The token is HMAC-SHA256 of a fixed label keyed with the password,
  * exactly as the API computes it. Web Crypto only, so it runs in the middleware (edge), on the
  * server and nowhere else: SITE_PASSWORD is not a NEXT_PUBLIC_ variable and never reaches the browser.
  */

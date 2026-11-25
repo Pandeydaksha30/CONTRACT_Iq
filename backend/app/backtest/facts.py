@@ -27,7 +27,7 @@ Safeguards that make an order unusable rather than risk a leak:
 
 Known, accepted residue: the unit-details table at the top is compiled by the authority's office
 and may state a due date of possession; it records the agreement's terms, not a finding on them.
-Hand check of split points: `python -m scripts.benchmark facts-export` (docs/annotation-guide.md).
+Hand check of split points: `python -m scripts.benchmark facts-export` (docs/components/annotation-guide.md).
 """
 
 from __future__ import annotations
