@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 
@@ -59,11 +60,17 @@ def prepare_case_hearing(
     return PreparedHearing(case_id, cutoff, ci, precedents)
 
 
-def execute_hearing(s: Session, run: HearingRun, prep: PreparedHearing, llm: LLM) -> HearingRun:
+def execute_hearing(
+    s: Session,
+    run: HearingRun,
+    prep: PreparedHearing,
+    llm: LLM,
+    on_stage: Callable[[str], None] | None = None,
+) -> HearingRun:
     """The model calls. Marks `run` completed with its result, or failed with the error (re-raised:
-    never a silent half-result)."""
+    never a silent half-result). `on_stage(name)` is called as each stage starts."""
     try:
-        run.result = run_graph(s, llm, prep.case_input, prep.precedents, as_of=prep.cutoff)
+        run.result = run_graph(s, llm, prep.case_input, prep.precedents, as_of=prep.cutoff, on_stage=on_stage)
         run.status = "completed"
     except Exception as e:
         run.status, run.error = "failed", f"{type(e).__name__}: {e}"[:1000]

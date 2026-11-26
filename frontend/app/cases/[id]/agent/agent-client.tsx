@@ -8,9 +8,12 @@ import { Citations, type PassageItem, Passages } from "@/components/evidence";
 import styles from "@/components/evidence.module.css";
 import { Banner } from "@/components/icons";
 import { type AgentRun, type AgentStep, getAgentRun, listAgentRuns, startAgent } from "@/lib/agent-api";
+import { canFollowLive, useLiveProgress } from "@/lib/live";
 import { fmtDate, fmtINR } from "@/lib/format";
 
 const POLL_MS = 2500;
+// With live progress (lib/live.ts) each step triggers a reload of the run; polling is only a fallback.
+const LIVE_FALLBACK_POLL_MS = 15000;
 
 const SUGGESTIONS = [
   "When was possession promised, how late is it, and what interest could the buyer claim at 10.80%?",
@@ -177,11 +180,21 @@ export default function AgentClient({ caseId, isDemo, readOnly }: { caseId: stri
     }
   }, [caseId, run]);
 
+  const token = run?.status === "running" ? run.live_token : null;
+  const live = useLiveProgress(token);
+  const followingLive = canFollowLive(token);
   useEffect(() => {
     if (run?.status !== "running") return;
-    const t = setInterval(poll, POLL_MS);
+    const t = setInterval(poll, followingLive ? LIVE_FALLBACK_POLL_MS : POLL_MS);
     return () => clearInterval(t);
-  }, [run?.status, poll]);
+  }, [run?.status, followingLive, poll]);
+
+  // A new step or the end of the run in Convex: reload the run (steps and result come from the API).
+  const liveMark = live ? `${live.status}:${live.stages.length}` : null;
+  useEffect(() => {
+    if (liveMark) poll();
+    // poll changes with every reloaded run; only a new live event should trigger this.
+  }, [liveMark]);
 
   async function start(e: React.FormEvent) {
     e.preventDefault();

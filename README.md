@@ -28,6 +28,7 @@ How it grew: `docs/project-evolution.md`.
 | **Hearing simulation**: buyer's advocate, builder's advocate, citation gate, judge | `hearing/` |
 | **Agent analysis**: the model picks tools and specialist agents step by step, every step saved | `agent/` |
 | **Report and complaint draft**: outcome estimate, weak points, draft from verified facts | `insights/` |
+| **Live case progress** (optional, Convex): hearing stages and agent steps appear as they happen | `live.py`, `frontend/convex/` |
 | **Accounts**: email + password, Google sign-in, email confirmation, per-user cases, rate limits | `auth/` |
 
 ## How one case flows through the system
@@ -49,7 +50,7 @@ Everything verified ─► Report + complaint draft
 - **Backend:** Python 3.12, FastAPI, SQLAlchemy, Alembic, PostgreSQL 17 + pgvector, LangGraph
 - **AI:** Google Gemini; `bge-small-en-v1.5` embeddings run locally (fastembed); scikit-learn classifiers
 - **OCR:** Tesseract (English + Hindi), pypdfium2
-- **Frontend:** Next.js 15, React 19, TypeScript
+- **Frontend:** Next.js 15, React 19, TypeScript; optional Convex for live progress
 
 ## Folder layout
 
@@ -117,6 +118,7 @@ render.yaml         Render deployment blueprint
 | `model-training.md`, `model-evaluation.md` | Prediction models and their results |
 | `security.md` | Security controls and known gaps |
 | `deployment.md` | Vercel + Render, Docker, or one server |
+| `live-progress.md` | Optional live case progress through Convex: setup and privacy |
 | `test-report.md` | What was tested and how |
 | `project-evolution.md` | Problem statement; mid-viva vs final comparison |
 | `components/` | Notes per component (search, hearing, citations, extraction, ...) |

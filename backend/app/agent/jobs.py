@@ -16,6 +16,7 @@ from app.agent.tools import ToolContext
 from app.db.models import AgentRun, Case
 from app.db.session import get_engine
 from app.hearing.agents import LLM
+from app.live import agent_step_label, publish
 from app.retrieval.embedder import Embedder
 
 log = logging.getLogger("contractiq.agent")
@@ -33,6 +34,14 @@ def execute_agent_run(s: Session, run: AgentRun, llm: LLM, embedder: Embedder | 
         r.steps = [*(r.steps or []), entry]
         flag_modified(r, "steps")
         s.commit()
+        publish(
+            "agent",
+            run_id,
+            "running",
+            stage=f"step-{entry.get('n')}",
+            label=agent_step_label(entry),
+            ok=bool(entry.get("ok")),
+        )
 
     try:
         result = run_orchestrator(ctx, run.objective, on_step)
@@ -41,6 +50,7 @@ def execute_agent_run(s: Session, run: AgentRun, llm: LLM, embedder: Embedder | 
         r = s.get(AgentRun, run_id)
         r.status, r.error, r.finished_at = "failed", f"{type(e).__name__}: {e}"[:1000], datetime.now(UTC)
         s.commit()
+        publish("agent", run_id, "failed")
         raise
     r = s.get(AgentRun, run_id)
     r.result = result
@@ -48,6 +58,7 @@ def execute_agent_run(s: Session, run: AgentRun, llm: LLM, embedder: Embedder | 
     r.status = "completed" if complete else "incomplete"
     r.finished_at = datetime.now(UTC)
     s.commit()
+    publish("agent", run_id, r.status)
     return r
 
 

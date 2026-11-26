@@ -19,6 +19,7 @@ from app.db.models import HearingRun
 from app.db.session import get_engine
 from app.hearing.agents import LLM
 from app.hearing.runner import PreparedHearing, execute_hearing
+from app.live import HEARING_STAGES, publish
 
 log = logging.getLogger("contractiq.hearing")
 
@@ -38,11 +39,17 @@ def hearing_job(run_id: int, prep: PreparedHearing, llm: LLM) -> Callable[[], No
             run = s.get(HearingRun, run_id)
             if run is None:  # deleted meanwhile (e.g. the account was deleted)
                 return
+
+            def on_stage(name: str) -> None:
+                publish("hearing", run_id, "running", stage=name, label=HEARING_STAGES.get(name, name))
+
             try:
-                execute_hearing(s, run, prep, llm)
+                execute_hearing(s, run, prep, llm, on_stage)
             except Exception:  # stored on the run by execute_hearing; logged with traceback here
                 log.exception("Hearing run %s failed", run_id)
             s.commit()
+            # After the commit, so the page that reacts to this finds the stored result.
+            publish("hearing", run_id, "completed" if run.status == "completed" else "failed")
 
     return job
 

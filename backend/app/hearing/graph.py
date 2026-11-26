@@ -8,6 +8,7 @@ judge's own citations are checked too, and failed ones are removed and recorded.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import date
 from typing import Any, TypedDict
 
@@ -71,7 +72,15 @@ def _end_transaction(s: Session) -> None:
         s.commit()
 
 
-def build_graph(s: Session, llm: agents.LLM, ci: CaseInput, precedents: list[Precedent], as_of: date):
+def build_graph(
+    s: Session,
+    llm: agents.LLM,
+    ci: CaseInput,
+    precedents: list[Precedent],
+    as_of: date,
+    on_stage: Callable[[str], None] | None = None,
+):
+    """`on_stage(name)` is called as each stage starts (live progress, app/live.py)."""
     summary = summary_text(ci)
     block = precedent_block(precedents)
     common = {"rules": agents.RULES, "summary": summary, "precedents": block, "cutoff": ci.cutoff.isoformat()}
@@ -155,7 +164,7 @@ def build_graph(s: Session, llm: agents.LLM, ci: CaseInput, precedents: list[Pre
         ("judge", judge),
         ("report", report),
     ):
-        g.add_node(name, fn)
+        g.add_node(name, _announced(name, fn, on_stage))
     g.add_edge(START, "buyer")
     g.add_edge("buyer", "builder")
     g.add_edge("builder", "gate")
@@ -165,7 +174,23 @@ def build_graph(s: Session, llm: agents.LLM, ci: CaseInput, precedents: list[Pre
     return g.compile()
 
 
+def _announced(name: str, fn, on_stage: Callable[[str], None] | None):
+    if on_stage is None:
+        return fn
+
+    def node(state: HearingState) -> HearingState:
+        on_stage(name)
+        return fn(state)
+
+    return node
+
+
 def run_graph(
-    s: Session, llm: agents.LLM, ci: CaseInput, precedents: list[Precedent], as_of: date
+    s: Session,
+    llm: agents.LLM,
+    ci: CaseInput,
+    precedents: list[Precedent],
+    as_of: date,
+    on_stage: Callable[[str], None] | None = None,
 ) -> dict[str, Any]:
-    return build_graph(s, llm, ci, precedents, as_of).invoke({})["report"]
+    return build_graph(s, llm, ci, precedents, as_of, on_stage).invoke({})["report"]

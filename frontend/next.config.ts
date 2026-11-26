@@ -4,6 +4,10 @@ import type { NextConfig } from "next";
 // API_URL to the Render service address (https://<service>.onrender.com); locally the default.
 const API_URL = process.env.API_URL ?? "http://127.0.0.1:8000";
 const dev = process.env.NODE_ENV !== "production";
+// Optional live progress (lib/live.ts): the browser connects to this Convex deployment over HTTPS
+// and a websocket, so the policy below allows exactly that address. Read at build time.
+const CONVEX_URL = (process.env.NEXT_PUBLIC_CONVEX_URL ?? "").replace(/\/+$/, "");
+const convexOrigins = CONVEX_URL ? ` ${CONVEX_URL} ${CONVEX_URL.replace(/^https:/, "wss:")}` : "";
 
 // Content Security Policy: only this site's own scripts, styles, fonts and API. Next.js needs
 // inline scripts for hydration; dev mode also needs eval and a websocket for hot reload.
@@ -14,7 +18,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  `connect-src 'self'${dev ? " ws: wss:" : ""}`,
+  `connect-src 'self'${convexOrigins}${dev ? " ws: wss:" : ""}`,
   "frame-ancestors 'none'",
   "form-action 'self' https://accounts.google.com",
   "base-uri 'self'",

@@ -22,6 +22,7 @@ from app.db.session import get_session
 from app.hearing.agents import LLM
 from app.hearing.jobs import Submit, default_submit, hearing_job
 from app.hearing.runner import HearingNotPossible, prepare_case_hearing
+from app.live import live_token
 from app.retrieval.embedder import Embedder
 
 router = APIRouter(prefix="/api/v1/cases", tags=["hearing"])
@@ -87,6 +88,8 @@ class RunOut(BaseModel):
     started_at: datetime
     finished_at: datetime | None
     result: dict[str, Any]
+    # Key of this run's live progress in Convex (app/live.py); None when live progress is off.
+    live_token: str | None = None
 
 
 def _out(run: HearingRun) -> RunOut:
@@ -99,6 +102,7 @@ def _out(run: HearingRun) -> RunOut:
         started_at=run.started_at,
         finished_at=run.finished_at,
         result=run.result,
+        live_token=live_token("hearing", run.id) if run.status == "running" else None,
     )
 
 

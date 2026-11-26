@@ -347,6 +347,52 @@ def test_hearing_api_runs_and_returns_latest(world, monkeypatch):
         app.dependency_overrides.clear()
 
 
+def test_hearing_publishes_live_stages_without_content(world, monkeypatch):
+    from pydantic import SecretStr
+
+    from app import live
+    from app.config import settings
+    from app.hearing import jobs
+
+    engine, ids = world
+    monkeypatch.setattr(jobs, "get_engine", lambda: engine)
+    monkeypatch.setattr(settings, "convex_site_url", "https://example-123.convex.site")
+    monkeypatch.setattr(settings, "convex_secret", SecretStr("s" * 40))
+    sent: list[dict] = []
+    monkeypatch.setattr(live, "_post", sent.append)
+    monkeypatch.setattr(live, "_pool", type("Inline", (), {"submit": lambda self, fn, *a: fn(*a)})())
+
+    def session_override():
+        with Session(engine) as s:
+            yield s
+            s.commit()
+
+    owner = make_user(engine)
+    with engine.begin() as c:
+        c.execute(text("UPDATE cases SET user_id = :u"), {"u": owner.id})
+    app.dependency_overrides[get_session] = session_override
+    app.dependency_overrides[current_user] = lambda: owner
+    app.dependency_overrides[hearing_api.get_hearing_llm] = StandIn
+    app.dependency_overrides[hearing_api.get_search_embedder] = lambda: None
+    queued: list = []
+    app.dependency_overrides[hearing_api.get_submit] = lambda: queued.append
+    try:
+        client = TestClient(app)
+        res = client.post(f"/api/v1/cases/{ids['demo']}/hearing").json()
+        token = res["live_token"]
+        assert token == live.live_token("hearing", res["id"])
+        queued.pop()()
+        done = client.get(f"/api/v1/cases/{ids['demo']}/hearing/runs/{res['id']}").json()
+        assert done["status"] == "completed" and done["live_token"] is None
+    finally:
+        app.dependency_overrides.clear()
+    assert [e.get("stage") for e in sent] == ["buyer", "builder", "gate", "judge", "report", None]
+    assert [e["status"] for e in sent][-1] == "completed"
+    assert all(e["token"] == token for e in sent)
+    labels = " ".join(e.get("label", "") for e in sent)
+    assert "Possession is overdue" not in labels  # no argument text leaves the server
+
+
 def test_interrupted_runs_are_marked_failed(world, monkeypatch):
     from app.hearing import jobs
 

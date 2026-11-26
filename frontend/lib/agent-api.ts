@@ -107,6 +107,8 @@ export interface AgentRun {
     judge?: { outcome: string; reasoning: string; weak_points: { title: string; fix: string }[] };
   };
   started_at: string;
+  /** Key of the run's live progress in Convex (lib/live.ts); null when live progress is off. */
+  live_token?: string | null;
 }
 
 export const startAgent = (caseId: string, objective: string) =>

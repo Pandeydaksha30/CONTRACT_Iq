@@ -114,6 +114,22 @@ class Settings(BaseSettings):
     smtp_password: SecretStr | None = None
     smtp_from: str = "ContractIQ <no-reply@localhost>"
 
+    # ── Live progress (optional, app/live.py and frontend/convex/) ──
+    # The Convex deployment's HTTP actions address (https://<name>.convex.site, not .convex.cloud)
+    # and a shared secret, also set in Convex as CONTRACTIQ_PROGRESS_SECRET. Both empty (default):
+    # nothing is sent and the website follows runs by polling as before.
+    convex_site_url: str = ""
+    convex_secret: SecretStr | None = None
+
+    @field_validator("convex_secret", mode="before")
+    @classmethod
+    def _empty_convex_secret_is_unset(cls, v):
+        return None if isinstance(v, str) and not v.strip() else v
+
+    @property
+    def live_enabled(self) -> bool:
+        return bool(self.convex_site_url.strip() and self.convex_secret)
+
     @property
     def google_enabled(self) -> bool:
         return bool(self.google_client_id and self.google_client_secret)

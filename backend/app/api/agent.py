@@ -25,6 +25,7 @@ from app.db.models import AgentRun
 from app.db.session import get_session
 from app.hearing.agents import LLM
 from app.hearing.jobs import Submit
+from app.live import live_token
 from app.retrieval.embedder import Embedder
 
 router = APIRouter(prefix="/api/v1/cases", tags=["agent"])
@@ -45,6 +46,8 @@ class AgentRunOut(BaseModel):
     result: dict[str, Any]
     started_at: datetime
     finished_at: datetime | None
+    # Key of this run's live progress in Convex (app/live.py); None when live progress is off.
+    live_token: str | None = None
 
 
 def _out(r: AgentRun) -> AgentRunOut:
@@ -58,6 +61,7 @@ def _out(r: AgentRun) -> AgentRunOut:
         result=r.result or {},
         started_at=r.started_at,
         finished_at=r.finished_at,
+        live_token=live_token("agent", r.id) if r.status == "running" else None,
     )
 
 

@@ -243,6 +243,8 @@ export interface HearingRun {
   started_at: string;
   finished_at: string | null;
   result: HearingResult;
+  /** Key of the run's live progress in Convex (lib/live.ts); null when live progress is off. */
+  live_token?: string | null;
 }
 
 /** Latest completed hearing, or null if none has been run yet. */

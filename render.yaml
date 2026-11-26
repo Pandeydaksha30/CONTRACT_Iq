@@ -76,3 +76,10 @@ services:
         sync: false
       - key: CONTRACTIQ_GOOGLE_CLIENT_SECRET
         sync: false
+      # Optional live progress (docs/live-progress.md): the Convex HTTP actions address
+      # (https://<deployment>.convex.site) and the secret also set in Convex as
+      # CONTRACTIQ_PROGRESS_SECRET. Both empty: the website polls as before.
+      - key: CONTRACTIQ_CONVEX_SITE_URL
+        sync: false
+      - key: CONTRACTIQ_CONVEX_SECRET
+        sync: false

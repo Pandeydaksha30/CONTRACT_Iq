@@ -50,6 +50,7 @@ person to change it on the Account page. For a site open to the public, set up S
 3. **Vercel:** Add New > Project, Root Directory `frontend`. Environment variables: `API_URL` =
    `https://<service>.onrender.com`, and `SITE_PASSWORD` = the same site password. Deploy.
 4. Load the public orders (step "Public order data" below). Check `/health` on both addresses.
+5. Optional: live case progress through Convex, `docs/live-progress.md`.
 
 Render builds with `uv sync --frozen` (exact locked packages) and runs `alembic upgrade head`
 before every start. If `CREATE EXTENSION vector` fails, enable pgvector for the database in the
@@ -130,9 +131,12 @@ classifier files are in the repository and in the API image; nothing to copy.
 | `CONTRACTIQ_PRIVATE_LLM_OK` | send real documents to the model | `false`, keep it |
 | `GEMINI_API_KEY`, `CONTRACTIQ_FALLBACK_MODELS`, `CONTRACTIQ_MODEL_RETRIES` | model and fallback | empty / `gemini-3.6-flash` / 2 |
 | `CONTRACTIQ_SMTP_*`, `CONTRACTIQ_GOOGLE_CLIENT_*` | email, Google sign-in | empty |
+| `CONTRACTIQ_CONVEX_SITE_URL`, `CONTRACTIQ_CONVEX_SECRET` | optional live progress through Convex (`docs/live-progress.md`) | empty (off) |
 | `PORT`, `FORWARDED_ALLOW_IPS` | container only: listening port, trusted proxies | 8000, `*` |
 
-Website: `API_URL` (build time) and `SITE_PASSWORD` (run time).
+Website: `API_URL` (build time), `SITE_PASSWORD` (run time), and for live progress
+`NEXT_PUBLIC_CONVEX_URL` (build time; with `CONVEX_DEPLOY_KEY` and the build command in
+`docs/live-progress.md`, Convex sets it).
 
 ## Limits that remain
 
