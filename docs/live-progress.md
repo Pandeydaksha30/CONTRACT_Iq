@@ -71,9 +71,9 @@ python -c "import secrets; print(secrets.token_hex(32))"
 - **Convex:** in the dashboard, use the project's *Production* deployment. Set
   `CONTRACTIQ_PROGRESS_SECRET` there too (production and dev have separate variables). Create a
   deploy key: Settings > Deploy Keys > Generate Production Deploy Key.
-- **Vercel** (Root Directory `frontend`): add `CONVEX_DEPLOY_KEY` (the deploy key) and set the
-  Build Command to `npx convex deploy --cmd 'npm run build'`. That pushes the Convex functions and
-  sets `NEXT_PUBLIC_CONVEX_URL` for the build automatically.
+- **Vercel** (Root Directory `frontend`): add `CONVEX_DEPLOY_KEY` (the deploy key). The build
+  command in `frontend/vercel.json` (`npm run build:vercel`) then pushes the Convex functions and
+  sets `NEXT_PUBLIC_CONVEX_URL` for the build automatically; without the key it builds as before.
 - **Render:** set `CONTRACTIQ_CONVEX_SITE_URL` (production `.convex.site` address) and
   `CONTRACTIQ_CONVEX_SECRET` on `contractiq-api`.
 

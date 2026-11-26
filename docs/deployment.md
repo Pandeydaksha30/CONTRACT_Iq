@@ -41,6 +41,9 @@ person to change it on the Account page. For a site open to the public, set up S
 
 ## A. Vercel + Render, native Python
 
+`render.yaml` is set up for option B (Docker, with OCR) and deploys the branch
+`contractiq/organise`. For this option, use the native lines in its comment.
+
 1. Push the repository to GitHub.
 2. **Render:** New > Blueprint, choose the repository. It creates `contractiq-db` (PostgreSQL 17)
    and `contractiq-api` (native Python, 2 GB plan, a 5 GB disk at `/var/data`) from `render.yaml`.
@@ -58,9 +61,10 @@ Render dashboard and redeploy.
 
 ## B. Vercel + Render, Docker runtime (with OCR)
 
-As A, but in `render.yaml` replace `runtime` .. `startCommand` with the three lines shown in the
-comment there (`runtime: docker`, `dockerfilePath: ./backend/Dockerfile`, `dockerContext: .`).
-The image contains Tesseract, runs the migrations itself and listens on `$PORT`.
+As A; this is what `render.yaml` does now (`runtime: docker`, `dockerfilePath: ./backend/Dockerfile`,
+`dockerContext: .`, the disk at `/srv/data`). The image contains Tesseract, runs the migrations
+itself and listens on `$PORT`. At start it checks that the disk is writable and stops with a clear
+message if not.
 
 ## C. Vercel + any container host
 
@@ -135,8 +139,8 @@ classifier files are in the repository and in the API image; nothing to copy.
 | `PORT`, `FORWARDED_ALLOW_IPS` | container only: listening port, trusted proxies | 8000, `*` |
 
 Website: `API_URL` (build time), `SITE_PASSWORD` (run time), and for live progress
-`NEXT_PUBLIC_CONVEX_URL` (build time; with `CONVEX_DEPLOY_KEY` and the build command in
-`docs/live-progress.md`, Convex sets it).
+`NEXT_PUBLIC_CONVEX_URL` (build time; with `CONVEX_DEPLOY_KEY` set, the `build:vercel` script
+sets it, `docs/live-progress.md`).
 
 ## Limits that remain
 

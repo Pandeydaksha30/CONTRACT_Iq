@@ -13,35 +13,35 @@ databases:
     plan: basic-1gb                 # the order data needs about 0.6 GB of storage
 
 services:
-  # Native Python runtime (no OCR: Render's Python environment has no Tesseract). To read scanned
-  # pages too, use the Docker runtime instead: replace the four lines runtime..startCommand with
-  #     runtime: docker
-  #     dockerfilePath: ./backend/Dockerfile
-  #     dockerContext: .
-  # (the image runs the migrations and listens on $PORT by itself).
+  # Docker runtime (backend/Dockerfile): the image includes Tesseract, so scanned pages and photos
+  # are read too. It runs the migrations itself and listens on $PORT. Built from the repository
+  # root, because the image also copies the trained classifiers from data/models/.
+  # Native Python instead (no OCR): replace the three lines runtime..dockerContext with
+  #     runtime: python
+  #     rootDir: backend
+  #     buildCommand: pip install uv==0.13.7 && uv sync --frozen --no-dev
+  #     startCommand: .venv/bin/alembic upgrade head && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
+  # and mount the disk at /var/data with CONTRACTIQ_DATA_DIR=/var/data.
   - type: web
     name: contractiq-api
-    runtime: python
-    rootDir: backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    # The branch with the current code (GitHub's default branch is older).
+    branch: contractiq/organise
     plan: standard                  # 2 GB memory: the local embedding model and PDF reading need it
-    # uv installs the exact locked packages (uv.lock) and the Python version in .python-version.
-    buildCommand: pip install uv==0.13.7 && uv sync --frozen --no-dev
-    # Migrations run before every start: a fresh database is created up to the current version.
-    startCommand: .venv/bin/alembic upgrade head && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
     healthCheckPath: /health
     # Uploaded documents, email outbox and the embedding-model cache. Without a disk they are
     # lost on every deploy and restart.
     disk:
       name: contractiq-data
-      mountPath: /var/data
+      mountPath: /srv/data          # the image's data directory (CONTRACTIQ_DATA_DIR=/srv/data)
       sizeGB: 5
     envVars:
       - key: CONTRACTIQ_DATABASE_URL
         fromDatabase:
           name: contractiq-db
           property: connectionString
-      - key: CONTRACTIQ_DATA_DIR
-        value: /var/data
       # The Vercel address, e.g. https://contractiq.vercel.app (no trailing slash). Both must be set.
       - key: CONTRACTIQ_PUBLIC_URL
         sync: false
